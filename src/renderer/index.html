@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'">
+  <title>KeySense - 快捷键感知器</title>
+  <link rel="stylesheet" href="main.css">
+</head>
+<body>
+  <div id="app">
+    <!-- 标题栏 -->
+    <header class="header">
+      <div class="app-icon">⌨️</div>
+      <div class="app-info">
+        <h1 class="app-name" id="appName">检测中...</h1>
+        <span class="app-process" id="appProcess"></span>
+      </div>
+    </header>
+
+    <!-- 搜索框 -->
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="搜索快捷键..." autocomplete="off">
+    </div>
+
+    <!-- 快捷键列表 -->
+    <main class="shortcuts-container" id="shortcutsContainer">
+      <!-- 动态渲染 -->
+    </main>
+
+    <!-- 底部提示 -->
+    <footer class="footer">
+      <span>按 Ctrl+Shift+K 切换显示</span>
+      <span id="totalCount">0 个快捷键</span>
+    </footer>
+  </div>
+
+  <script src="main.js"></script>
+</body>
+</html>
