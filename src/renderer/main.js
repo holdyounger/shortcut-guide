@@ -24,6 +24,8 @@ const state = {
   windowStartY: 0,
   isCountingDown: false,
   countdownInterval: null,
+  /** 欢迎页是否已关闭（关闭后才启动 5s 隐藏倒计时）*/
+  welcomeDismissed: false,
 };
 
 // ========== DOM 元素 ==========
@@ -64,7 +66,10 @@ async function init() {
       window.keySenseAPI.mouseEnter();
     });
     appEl.addEventListener('mouseleave', () => {
-      window.keySenseAPI.mouseLeave();
+      // 欢迎页未关闭时，不启动 5s 隐藏倒计时
+      if (state.welcomeDismissed) {
+        window.keySenseAPI.mouseLeave();
+      }
     });
     console.log('[Renderer] 鼠标进入/离开监听已注册');
   }
@@ -94,9 +99,12 @@ function checkWelcome() {
       // 首次启动：显示欢迎页
       if (elements.welcomeOverlay) {
         elements.welcomeOverlay.classList.add('visible');
+        state.welcomeDismissed = false;
         console.log('[Renderer] 首次启动，显示欢迎页');
       }
     } else {
+      // 非首次启动：允许立即启动倒计时
+      state.welcomeDismissed = true;
       console.log('[Renderer] 非首次启动，跳过欢迎页');
     }
   } catch (err) {
@@ -105,6 +113,7 @@ function checkWelcome() {
 }
 
 function closeWelcome() {
+  state.welcomeDismissed = true;
   try {
     localStorage.setItem(WELCOME_KEY, '1');
   } catch (err) {
