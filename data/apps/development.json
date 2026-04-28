@@ -12,115 +12,28 @@
         "linux"
       ],
       "shortcuts": [
-        {
-          "key": "Ctrl+T",
-          "action": "打开新标签页",
-          "category": "标签页"
-        },
-        {
-          "key": "Ctrl+Shift+T",
-          "action": "恢复关闭的标签页",
-          "category": "标签页"
-        },
-        {
-          "key": "Ctrl+W",
-          "action": "关闭当前标签页",
-          "category": "标签页"
-        },
-        {
-          "key": "Ctrl+Tab",
-          "action": "切换到下一个标签页",
-          "category": "标签页"
-        },
-        {
-          "key": "Ctrl+Shift+Tab",
-          "action": "切换到上一个标签页",
-          "category": "标签页"
-        },
-        {
-          "key": "Ctrl+L",
-          "action": "聚焦地址栏",
-          "category": "导航"
-        },
-        {
-          "key": "Ctrl+K",
-          "action": "聚焦搜索栏",
-          "category": "导航"
-        },
-        {
-          "key": "Ctrl+D",
-          "action": "添加书签",
-          "category": "书签"
-        },
-        {
-          "key": "Ctrl+Shift+D",
-          "action": "将所有标签页加入书签",
-          "category": "书签"
-        },
-        {
-          "key": "Ctrl+H",
-          "action": "打开历史记录",
-          "category": "导航"
-        },
-        {
-          "key": "Ctrl+J",
-          "action": "打开下载列表",
-          "category": "导航"
-        },
-        {
-          "key": "F12",
-          "action": "打开开发者工具",
-          "category": "开发者"
-        },
-        {
-          "key": "Ctrl+Shift+I",
-          "action": "打开开发者工具",
-          "category": "开发者"
-        },
-        {
-          "key": "Ctrl+Shift+J",
-          "action": "打开控制台",
-          "category": "开发者"
-        },
-        {
-          "key": "Ctrl+Shift+C",
-          "action": "元素选择器",
-          "category": "开发者"
-        },
-        {
-          "key": "F11",
-          "action": "全屏模式",
-          "category": "窗口"
-        },
-        {
-          "key": "Esc",
-          "action": "停止加载",
-          "category": "导航"
-        },
-        {
-          "key": "F5",
-          "action": "刷新页面",
-          "category": "导航"
-        },
-        {
-          "key": "Ctrl+F5",
-          "action": "强制刷新（清除缓存）",
-          "category": "导航"
-        },
-        {
-          "key": "Ctrl++",
-          "action": "放大页面",
-          "category": "缩放"
-        },
-        {
-          "key": "Ctrl+-",
-          "action": "缩小页面",
-          "category": "缩放"
-        },
-        {
-          "key": "Ctrl+0",
-          "action": "恢复默认缩放",
-          "category": "缩放"
+        {"key": "Ctrl+T","action": "打开新标签页","category": "标签页" },
+        {"key": "Ctrl+Shift+T","action": "恢复关闭的标签页","category": "标签页" },
+        {"key": "Ctrl+W","action": "关闭当前标签页","category": "标签页" },
+        {"key": "Ctrl+Tab","action": "切换到下一个标签页","category": "标签页" },
+        {"key": "Ctrl+Shift+Tab","action": "切换到上一个标签页","category": "标签页" },
+        {"key": "Ctrl+L","action": "聚焦地址栏","category": "导航" },
+        {"key": "Ctrl+K","action": "聚焦搜索栏","category": "导航" },
+        {"key": "Ctrl+D","action": "添加书签","category": "书签" },
+        {"key": "Ctrl+Shift+D","action": "将所有标签页加入书签","category": "书签" },
+        {"key": "Ctrl+H","action": "打开历史记录","category": "导航" },
+        {"key": "Ctrl+J","action": "打开下载列表","category": "导航" },
+        {"key": "F12","action": "打开开发者工具","category": "开发者" },
+        {"key": "Ctrl+Shift+I","action": "打开开发者工具","category": "开发者" },
+        {"key": "Ctrl+Shift+J","action": "打开控制台","category": "开发者" },
+        {"key": "Ctrl+Shift+C","action": "元素选择器","category": "开发者" },
+        {"key": "F11","action": "全屏模式","category": "窗口" },
+        {"key": "Esc","action": "停止加载","category": "导航" },
+        {"key": "F5","action": "刷新页面","category": "导航" },
+        {"key": "Ctrl+F5","action": "强制刷新（清除缓存）","category": "导航" },
+        {"key": "Ctrl++","action": "放大页面","category": "缩放" },
+        {"key": "Ctrl+-","action": "缩小页面","category": "缩放" },
+        {"key": "Ctrl+0","action": "恢复默认缩放","category": "缩放"
         }
       ],
       "type": "development"
@@ -137,45 +50,14 @@
         "windows"
       ],
       "shortcuts": [
-        {
-          "key": "Ctrl+Shift+T",
-          "action": "新建标签页",
-          "category": "标签页"
-        },
-        {
-          "key": "Ctrl+Shift+W",
-          "action": "关闭当前标签页",
-          "category": "标签页"
-        },
-        {
-          "key": "Ctrl+Tab",
-          "action": "切换到下一个标签页",
-          "category": "标签页"
-        },
-        {
-          "key": "Ctrl+Shift+Tab",
-          "action": "切换到上一个标签页",
-          "category": "标签页"
-        },
-        {
-          "key": "Ctrl+,",
-          "action": "打开设置",
-          "category": "设置"
-        },
-        {
-          "key": "Ctrl+Shift+P",
-          "action": "命令面板",
-          "category": "命令"
-        },
-        {
-          "key": "Alt+F4",
-          "action": "关闭窗口",
-          "category": "窗口"
-        },
-        {
-          "key": "F11",
-          "action": "全屏模式",
-          "category": "窗口"
+        {"key": "Ctrl+Shift+T","action": "新建标签页","category": "标签页" },
+        {"key": "Ctrl+Shift+W","action": "关闭当前标签页","category": "标签页" },
+        {"key": "Ctrl+Tab","action": "切换到下一个标签页","category": "标签页" },
+        {"key": "Ctrl+Shift+Tab","action": "切换到上一个标签页","category": "标签页" },
+        {"key": "Ctrl+,","action": "打开设置","category": "设置" },
+        {"key": "Ctrl+Shift+P","action": "命令面板","category": "命令" },
+        {"key": "Alt+F4","action": "关闭窗口","category": "窗口" },
+        {"key": "F11","action": "全屏模式","category": "窗口"
         }
       ],
       "type": "development"
@@ -192,115 +74,28 @@
         "windows"
       ],
       "shortcuts": [
-        {
-          "key": "F5",
-          "action": "运行/继续执行",
-          "category": "调试"
-        },
-        {
-          "key": "F6",
-          "action": "附加到进程",
-          "category": "调试"
-        },
-        {
-          "key": "F7",
-          "action": "运行到光标处",
-          "category": "调试"
-        },
-        {
-          "key": "F8",
-          "action": "切换断点",
-          "category": "断点"
-        },
-        {
-          "key": "F9",
-          "action": "设置/清除断点",
-          "category": "断点"
-        },
-        {
-          "key": "F10",
-          "action": "单步步过（Step Over）",
-          "category": "调试"
-        },
-        {
-          "key": "F11",
-          "action": "单步步入（Step Into）",
-          "category": "调试"
-        },
-        {
-          "key": "Shift+F11",
-          "action": "单步跳出（Step Out）",
-          "category": "调试"
-        },
-        {
-          "key": "Ctrl+Break",
-          "action": "中断执行",
-          "category": "调试"
-        },
-        {
-          "key": "Ctrl+C",
-          "action": "复制选中内容",
-          "category": "编辑"
-        },
-        {
-          "key": "Ctrl+V",
-          "action": "粘贴",
-          "category": "编辑"
-        },
-        {
-          "key": "Ctrl+F",
-          "action": "查找",
-          "category": "编辑"
-        },
-        {
-          "key": "Ctrl+G",
-          "action": "转到地址",
-          "category": "导航"
-        },
-        {
-          "key": "Ctrl+S",
-          "action": "保存工作空间",
-          "category": "文件"
-        },
-        {
-          "key": "Ctrl+O",
-          "action": "打开转储文件",
-          "category": "文件"
-        },
-        {
-          "key": "Alt+1",
-          "action": "命令窗口",
-          "category": "窗口"
-        },
-        {
-          "key": "Alt+2",
-          "action": "监视窗口",
-          "category": "窗口"
-        },
-        {
-          "key": "Alt+3",
-          "action": "局部变量窗口",
-          "category": "窗口"
-        },
-        {
-          "key": "Alt+4",
-          "action": "调用堆栈窗口",
-          "category": "窗口"
-        },
-        {
-          "key": "Alt+5",
-          "action": "反汇编窗口",
-          "category": "窗口"
-        },
-        {
-          "key": "Alt+6",
-          "action": "内存窗口",
-          "category": "窗口"
-        },
-        {
-          "key": "Alt+7",
-          "action": "寄存器窗口",
-          "category": "窗口"
+        {"key": "F5","action": "运行/继续执行","category": "调试" },
+        {"key": "F6","action": "附加到进程","category": "调试" },
+        {"key": "F7","action": "运行到光标处","category": "调试" },
+        {"key": "F8","action": "切换断点","category": "断点" },
+        {"key": "F9","action": "设置/清除断点","category": "断点" },
+        {"key": "F10","action": "单步步过（Step Over）","category": "调试" },
+        {"key": "F11","action": "单步步入（Step Into）","category": "调试" },
+        {"key": "Shift+F11","action": "单步跳出（Step Out）","category": "调试" },
+        {"key": "Ctrl+Break","action": "中断执行","category": "调试" },
+        {"key": "Ctrl+C","action": "复制选中内容","category": "编辑" },
+        {"key": "Ctrl+V","action": "粘贴","category": "编辑" },
+        {"key": "Ctrl+F","action": "查找","category": "编辑" },
+        {"key": "Ctrl+G","action": "转到地址","category": "导航" },
+        {"key": "Ctrl+S","action": "保存工作空间","category": "文件" },
+        {"key": "Ctrl+O","action": "打开转储文件","category": "文件" },
+        {"key": "Alt+1","action": "命令窗口","category": "窗口" },
+        {"key": "Alt+2","action": "监视窗口","category": "窗口" },
+        {"key": "Alt+3","action": "局部变量窗口","category": "窗口" },
+        {"key": "Alt+4","action": "调用堆栈窗口","category": "窗口" },
+        {"key": "Alt+5","action": "反汇编窗口","category": "窗口" },
+        {"key": "Alt+6","action": "内存窗口","category": "窗口" },
+        {"key": "Alt+7","action": "寄存器窗口","category": "窗口"
         }
       ],
       "type": "development"
@@ -318,120 +113,29 @@
         "linux"
       ],
       "shortcuts": [
-        {
-          "key": "Ctrl+P",
-          "action": "快速打开文件",
-          "category": "导航"
-        },
-        {
-          "key": "Ctrl+Shift+P",
-          "action": "命令面板",
-          "category": "导航"
-        },
-        {
-          "key": "Ctrl+G",
-          "action": "跳转到行",
-          "category": "导航"
-        },
-        {
-          "key": "Ctrl+Shift+O",
-          "action": "跳转到符号",
-          "category": "导航"
-        },
-        {
-          "key": "Ctrl+T",
-          "action": "跳转到工作区符号",
-          "category": "导航"
-        },
-        {
-          "key": "Ctrl+B",
-          "action": "切换侧边栏",
-          "category": "窗口"
-        },
-        {
-          "key": "Ctrl+`",
-          "action": "打开终端",
-          "category": "终端"
-        },
-        {
-          "key": "Ctrl+Shift+`",
-          "action": "新建终端",
-          "category": "终端"
-        },
-        {
-          "key": "F5",
-          "action": "开始调试",
-          "category": "调试"
-        },
-        {
-          "key": "F9",
-          "action": "切换断点",
-          "category": "调试"
-        },
-        {
-          "key": "F10",
-          "action": "单步步过",
-          "category": "调试"
-        },
-        {
-          "key": "F11",
-          "action": "单步步入",
-          "category": "调试"
-        },
-        {
-          "key": "Shift+F11",
-          "action": "单步跳出",
-          "category": "调试"
-        },
-        {
-          "key": "Ctrl+Shift+D",
-          "action": "调试视图",
-          "category": "调试"
-        },
-        {
-          "key": "Ctrl+N",
-          "action": "新建文件",
-          "category": "文件"
-        },
-        {
-          "key": "Ctrl+O",
-          "action": "打开文件",
-          "category": "文件"
-        },
-        {
-          "key": "Ctrl+S",
-          "action": "保存",
-          "category": "文件"
-        },
-        {
-          "key": "Ctrl+Shift+S",
-          "action": "另存为",
-          "category": "文件"
-        },
-        {
-          "key": "Ctrl+W",
-          "action": "关闭编辑器",
-          "category": "文件"
-        },
-        {
-          "key": "Ctrl+K, Ctrl+S",
-          "action": "键盘快捷方式",
-          "category": "设置"
-        },
-        {
-          "key": "Ctrl+,",
-          "action": "打开设置",
-          "category": "设置"
-        },
-        {
-          "key": "Ctrl+Shift+N",
-          "action": "新建窗口",
-          "category": "窗口"
-        },
-        {
-          "key": "Ctrl+Tab",
-          "action": "切换编辑器",
-          "category": "窗口"
+        {"key": "Ctrl+P","action": "快速打开文件","category": "导航" },
+        {"key": "Ctrl+Shift+P","action": "命令面板","category": "导航" },
+        {"key": "Ctrl+G","action": "跳转到行","category": "导航" },
+        {"key": "Ctrl+Shift+O","action": "跳转到符号","category": "导航" },
+        {"key": "Ctrl+T","action": "跳转到工作区符号","category": "导航" },
+        {"key": "Ctrl+B","action": "切换侧边栏","category": "窗口" },
+        {"key": "Ctrl+`","action": "打开终端","category": "终端" },
+        {"key": "Ctrl+Shift+`","action": "新建终端","category": "终端" },
+        {"key": "F5","action": "开始调试","category": "调试" },
+        {"key": "F9","action": "切换断点","category": "调试" },
+        {"key": "F10","action": "单步步过","category": "调试" },
+        {"key": "F11","action": "单步步入","category": "调试" },
+        {"key": "Shift+F11","action": "单步跳出","category": "调试" },
+        {"key": "Ctrl+Shift+D","action": "调试视图","category": "调试" },
+        {"key": "Ctrl+N","action": "新建文件","category": "文件" },
+        {"key": "Ctrl+O","action": "打开文件","category": "文件" },
+        {"key": "Ctrl+S","action": "保存","category": "文件" },
+        {"key": "Ctrl+Shift+S","action": "另存为","category": "文件" },
+        {"key": "Ctrl+W","action": "关闭编辑器","category": "文件" },
+        {"key": "Ctrl+K, Ctrl+S","action": "键盘快捷方式","category": "设置" },
+        {"key": "Ctrl+,","action": "打开设置","category": "设置" },
+        {"key": "Ctrl+Shift+N","action": "新建窗口","category": "窗口" },
+        {"key": "Ctrl+Tab","action": "切换编辑器","category": "窗口"
         }
       ],
       "type": "development"
@@ -447,70 +151,19 @@
         "windows"
       ],
       "shortcuts": [
-        {
-          "key": "Ctrl+Shift+N",
-          "action": "按文件名搜索",
-          "category": "文件"
-        },
-        {
-          "key": "Ctrl+N",
-          "action": "搜索类",
-          "category": "文件"
-        },
-        {
-          "key": "Ctrl+Shift+F",
-          "action": "全局搜索",
-          "category": "文件"
-        },
-        {
-          "key": "Ctrl+F",
-          "action": "当前文件搜索",
-          "category": "编辑"
-        },
-        {
-          "key": "Alt+F7",
-          "action": "查找引用",
-          "category": "调试"
-        },
-        {
-          "key": "Ctrl+Alt+L",
-          "action": "格式化代码",
-          "category": "编辑"
-        },
-        {
-          "key": "Ctrl+E",
-          "action": "最近文件",
-          "category": "编辑"
-        },
-        {
-          "key": "Shift+Shift",
-          "action": "搜索所有",
-          "category": "其他"
-        },
-        {
-          "key": "F2",
-          "action": "下一个错误",
-          "category": "编辑"
-        },
-        {
-          "key": "Ctrl+R",
-          "action": "替换",
-          "category": "编辑"
-        },
-        {
-          "key": "Ctrl+G",
-          "action": "跳转到行",
-          "category": "编辑"
-        },
-        {
-          "key": "Ctrl+[/",
-          "action": "折叠代码块",
-          "category": "编辑"
-        },
-        {
-          "key": "Ctrl+]/",
-          "action": "展开代码块",
-          "category": "编辑"
+        {"key": "Ctrl+Shift+N","action": "按文件名搜索","category": "文件" },
+        {"key": "Ctrl+N","action": "搜索类","category": "文件" },
+        {"key": "Ctrl+Shift+F","action": "全局搜索","category": "文件" },
+        {"key": "Ctrl+F","action": "当前文件搜索","category": "编辑" },
+        {"key": "Alt+F7","action": "查找引用","category": "调试" },
+        {"key": "Ctrl+Alt+L","action": "格式化代码","category": "编辑" },
+        {"key": "Ctrl+E","action": "最近文件","category": "编辑" },
+        {"key": "Shift+Shift","action": "搜索所有","category": "其他" },
+        {"key": "F2","action": "下一个错误","category": "编辑" },
+        {"key": "Ctrl+R","action": "替换","category": "编辑" },
+        {"key": "Ctrl+G","action": "跳转到行","category": "编辑" },
+        {"key": "Ctrl+[/","action": "折叠代码块","category": "编辑" },
+        {"key": "Ctrl+]/","action": "展开代码块","category": "编辑"
         }
       ]
     },
@@ -524,50 +177,15 @@
         "windows"
       ],
       "shortcuts": [
-        {
-          "key": "Ctrl+T",
-          "action": "新建标签",
-          "category": "搜索"
-        },
-        {
-          "key": "Ctrl+W",
-          "action": "关闭标签",
-          "category": "标签页"
-        },
-        {
-          "key": "Ctrl+Tab",
-          "action": "下一个标签",
-          "category": "搜索"
-        },
-        {
-          "key": "Ctrl+Shift+Tab",
-          "action": "上一个标签",
-          "category": "文件"
-        },
-        {
-          "key": "Ctrl+L",
-          "action": "地址栏",
-          "category": "编辑"
-        },
-        {
-          "key": "Ctrl+D",
-          "action": "收藏",
-          "category": "编辑"
-        },
-        {
-          "key": "Ctrl+Shift+B",
-          "action": "显示收藏栏",
-          "category": "文件"
-        },
-        {
-          "key": "Ctrl+Shift+K",
-          "action": "复制标签",
-          "category": "文件"
-        },
-        {
-          "key": "Ctrl+M",
-          "action": "静音",
-          "category": "标签页"
+        {"key": "Ctrl+T","action": "新建标签","category": "搜索" },
+        {"key": "Ctrl+W","action": "关闭标签","category": "标签页" },
+        {"key": "Ctrl+Tab","action": "下一个标签","category": "搜索" },
+        {"key": "Ctrl+Shift+Tab","action": "上一个标签","category": "文件" },
+        {"key": "Ctrl+L","action": "地址栏","category": "编辑" },
+        {"key": "Ctrl+D","action": "收藏","category": "编辑" },
+        {"key": "Ctrl+Shift+B","action": "显示收藏栏","category": "文件" },
+        {"key": "Ctrl+Shift+K","action": "复制标签","category": "文件" },
+        {"key": "Ctrl+M","action": "静音","category": "标签页"
         }
       ]
     }

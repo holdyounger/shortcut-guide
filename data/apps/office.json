@@ -13,150 +13,35 @@
         "macos"
       ],
       "shortcuts": [
-        {
-          "key": "Ctrl+N",
-          "action": "新建文档",
-          "category": "文件"
-        },
-        {
-          "key": "Ctrl+O",
-          "action": "打开文档",
-          "category": "文件"
-        },
-        {
-          "key": "Ctrl+S",
-          "action": "保存",
-          "category": "文件"
-        },
-        {
-          "key": "Ctrl+Shift+S",
-          "action": "另存为",
-          "category": "文件"
-        },
-        {
-          "key": "Ctrl+W",
-          "action": "关闭文档",
-          "category": "文件"
-        },
-        {
-          "key": "Ctrl+P",
-          "action": "打印",
-          "category": "文件"
-        },
-        {
-          "key": "Ctrl+Z",
-          "action": "撤销",
-          "category": "编辑"
-        },
-        {
-          "key": "Ctrl+Y",
-          "action": "重做",
-          "category": "编辑"
-        },
-        {
-          "key": "Ctrl+C",
-          "action": "复制",
-          "category": "编辑"
-        },
-        {
-          "key": "Ctrl+X",
-          "action": "剪切",
-          "category": "编辑"
-        },
-        {
-          "key": "Ctrl+V",
-          "action": "粘贴",
-          "category": "编辑"
-        },
-        {
-          "key": "Ctrl+A",
-          "action": "全选",
-          "category": "编辑"
-        },
-        {
-          "key": "Ctrl+F",
-          "action": "查找",
-          "category": "编辑"
-        },
-        {
-          "key": "Ctrl+H",
-          "action": "替换",
-          "category": "编辑"
-        },
-        {
-          "key": "Ctrl+B",
-          "action": "加粗",
-          "category": "格式"
-        },
-        {
-          "key": "Ctrl+I",
-          "action": "斜体",
-          "category": "格式"
-        },
-        {
-          "key": "Ctrl+U",
-          "action": "下划线",
-          "category": "格式"
-        },
-        {
-          "key": "Ctrl+E",
-          "action": "居中对齐",
-          "category": "格式"
-        },
-        {
-          "key": "Ctrl+L",
-          "action": "左对齐",
-          "category": "格式"
-        },
-        {
-          "key": "Ctrl+R",
-          "action": "右对齐",
-          "category": "格式"
-        },
-        {
-          "key": "Ctrl+J",
-          "action": "两端对齐",
-          "category": "格式"
-        },
-        {
-          "key": "Ctrl+1",
-          "action": "单倍行距",
-          "category": "格式"
-        },
-        {
-          "key": "Ctrl+2",
-          "action": "双倍行距",
-          "category": "格式"
-        },
-        {
-          "key": "Ctrl+5",
-          "action": "1.5倍行距",
-          "category": "格式"
-        },
-        {
-          "key": "Ctrl+Enter",
-          "action": "插入分页符",
-          "category": "插入"
-        },
-        {
-          "key": "Ctrl+K",
-          "action": "插入超链接",
-          "category": "插入"
-        },
-        {
-          "key": "Ctrl+Home",
-          "action": "跳转到文档开头",
-          "category": "导航"
-        },
-        {
-          "key": "Ctrl+End",
-          "action": "跳转到文档末尾",
-          "category": "导航"
-        },
-        {
-          "key": "F7",
-          "action": "拼写和语法检查",
-          "category": "审阅"
+        {"key": "Ctrl+N","action": "新建文档","category": "文件" },
+        {"key": "Ctrl+O","action": "打开文档","category": "文件" },
+        {"key": "Ctrl+S","action": "保存","category": "文件" },
+        {"key": "Ctrl+Shift+S","action": "另存为","category": "文件" },
+        {"key": "Ctrl+W","action": "关闭文档","category": "文件" },
+        {"key": "Ctrl+P","action": "打印","category": "文件" },
+        {"key": "Ctrl+Z","action": "撤销","category": "编辑" },
+        {"key": "Ctrl+Y","action": "重做","category": "编辑" },
+        {"key": "Ctrl+C","action": "复制","category": "编辑" },
+        {"key": "Ctrl+X","action": "剪切","category": "编辑" },
+        {"key": "Ctrl+V","action": "粘贴","category": "编辑" },
+        {"key": "Ctrl+A","action": "全选","category": "编辑" },
+        {"key": "Ctrl+F","action": "查找","category": "编辑" },
+        {"key": "Ctrl+H","action": "替换","category": "编辑" },
+        {"key": "Ctrl+B","action": "加粗","category": "格式" },
+        {"key": "Ctrl+I","action": "斜体","category": "格式" },
+        {"key": "Ctrl+U","action": "下划线","category": "格式" },
+        {"key": "Ctrl+E","action": "居中对齐","category": "格式" },
+        {"key": "Ctrl+L","action": "左对齐","category": "格式" },
+        {"key": "Ctrl+R","action": "右对齐","category": "格式" },
+        {"key": "Ctrl+J","action": "两端对齐","category": "格式" },
+        {"key": "Ctrl+1","action": "单倍行距","category": "格式" },
+        {"key": "Ctrl+2","action": "双倍行距","category": "格式" },
+        {"key": "Ctrl+5","action": "1.5倍行距","category": "格式" },
+        {"key": "Ctrl+Enter","action": "插入分页符","category": "插入" },
+        {"key": "Ctrl+K","action": "插入超链接","category": "插入" },
+        {"key": "Ctrl+Home","action": "跳转到文档开头","category": "导航" },
+        {"key": "Ctrl+End","action": "跳转到文档末尾","category": "导航" },
+        {"key": "F7","action": "拼写和语法检查","category": "审阅"
         }
       ],
       "type": "office"
@@ -175,115 +60,28 @@
         "windows"
       ],
       "shortcuts": [
-        {
-          "key": "Ctrl+N",
-          "action": "新建文档",
-          "category": "文件"
-        },
-        {
-          "key": "Ctrl+O",
-          "action": "打开文档",
-          "category": "文件"
-        },
-        {
-          "key": "Ctrl+S",
-          "action": "保存",
-          "category": "文件"
-        },
-        {
-          "key": "Ctrl+Shift+S",
-          "action": "另存为",
-          "category": "文件"
-        },
-        {
-          "key": "Ctrl+Alt+S",
-          "action": "保存为PDF",
-          "category": "文件"
-        },
-        {
-          "key": "Ctrl+W",
-          "action": "关闭文档",
-          "category": "文件"
-        },
-        {
-          "key": "Ctrl+P",
-          "action": "打印",
-          "category": "文件"
-        },
-        {
-          "key": "Ctrl+Z",
-          "action": "撤销",
-          "category": "编辑"
-        },
-        {
-          "key": "Ctrl+Y",
-          "action": "重做",
-          "category": "编辑"
-        },
-        {
-          "key": "Ctrl+C",
-          "action": "复制",
-          "category": "编辑"
-        },
-        {
-          "key": "Ctrl+X",
-          "action": "剪切",
-          "category": "编辑"
-        },
-        {
-          "key": "Ctrl+V",
-          "action": "粘贴",
-          "category": "编辑"
-        },
-        {
-          "key": "Ctrl+A",
-          "action": "全选",
-          "category": "编辑"
-        },
-        {
-          "key": "Ctrl+F",
-          "action": "查找",
-          "category": "编辑"
-        },
-        {
-          "key": "Ctrl+H",
-          "action": "替换",
-          "category": "编辑"
-        },
-        {
-          "key": "Ctrl+B",
-          "action": "加粗",
-          "category": "格式"
-        },
-        {
-          "key": "Ctrl+I",
-          "action": "斜体",
-          "category": "格式"
-        },
-        {
-          "key": "Ctrl+U",
-          "action": "下划线",
-          "category": "格式"
-        },
-        {
-          "key": "Ctrl+E",
-          "action": "居中对齐",
-          "category": "格式"
-        },
-        {
-          "key": "Ctrl+L",
-          "action": "左对齐",
-          "category": "格式"
-        },
-        {
-          "key": "Ctrl+R",
-          "action": "右对齐",
-          "category": "格式"
-        },
-        {
-          "key": "F1",
-          "action": "打开帮助中心",
-          "category": "帮助"
+        {"key": "Ctrl+N","action": "新建文档","category": "文件" },
+        {"key": "Ctrl+O","action": "打开文档","category": "文件" },
+        {"key": "Ctrl+S","action": "保存","category": "文件" },
+        {"key": "Ctrl+Shift+S","action": "另存为","category": "文件" },
+        {"key": "Ctrl+Alt+S","action": "保存为PDF","category": "文件" },
+        {"key": "Ctrl+W","action": "关闭文档","category": "文件" },
+        {"key": "Ctrl+P","action": "打印","category": "文件" },
+        {"key": "Ctrl+Z","action": "撤销","category": "编辑" },
+        {"key": "Ctrl+Y","action": "重做","category": "编辑" },
+        {"key": "Ctrl+C","action": "复制","category": "编辑" },
+        {"key": "Ctrl+X","action": "剪切","category": "编辑" },
+        {"key": "Ctrl+V","action": "粘贴","category": "编辑" },
+        {"key": "Ctrl+A","action": "全选","category": "编辑" },
+        {"key": "Ctrl+F","action": "查找","category": "编辑" },
+        {"key": "Ctrl+H","action": "替换","category": "编辑" },
+        {"key": "Ctrl+B","action": "加粗","category": "格式" },
+        {"key": "Ctrl+I","action": "斜体","category": "格式" },
+        {"key": "Ctrl+U","action": "下划线","category": "格式" },
+        {"key": "Ctrl+E","action": "居中对齐","category": "格式" },
+        {"key": "Ctrl+L","action": "左对齐","category": "格式" },
+        {"key": "Ctrl+R","action": "右对齐","category": "格式" },
+        {"key": "F1","action": "打开帮助中心","category": "帮助"
         }
       ],
       "type": "office"
@@ -298,65 +96,18 @@
         "windows"
       ],
       "shortcuts": [
-        {
-          "key": "F2",
-          "action": "编辑单元格",
-          "category": "编辑"
-        },
-        {
-          "key": "Ctrl+Enter",
-          "action": "填充选中",
-          "category": "编辑"
-        },
-        {
-          "key": "Ctrl+;",
-          "action": "输入日期",
-          "category": "搜索"
-        },
-        {
-          "key": "Ctrl+Shift+;",
-          "action": "输入时间",
-          "category": "文件"
-        },
-        {
-          "key": "Ctrl+Shift+L",
-          "action": "切换筛选",
-          "category": "文件"
-        },
-        {
-          "key": "Ctrl+T",
-          "action": "创建表",
-          "category": "搜索"
-        },
-        {
-          "key": "Ctrl+Alt+V",
-          "action": "选择性粘贴",
-          "category": "编辑"
-        },
-        {
-          "key": "Alt+=",
-          "action": "求和公式",
-          "category": "其他"
-        },
-        {
-          "key": "Ctrl+Shift+1",
-          "action": "格式化为数字",
-          "category": "文件"
-        },
-        {
-          "key": "Ctrl+Shift+4",
-          "action": "格式化为货币",
-          "category": "文件"
-        },
-        {
-          "key": "Ctrl+D",
-          "action": "向下填充",
-          "category": "编辑"
-        },
-        {
-          "key": "Ctrl+R",
-          "action": "向右填充",
-          "category": "编辑"
+        {"key": "F2","action": "编辑单元格","category": "编辑" },
+        {"key": "Ctrl+Enter","action": "填充选中","category": "编辑" },
+        {"key": "Ctrl+;","action": "输入日期","category": "搜索" },
+        {"key": "Ctrl+Shift+;","action": "输入时间","category": "文件" },
+        {"key": "Ctrl+Shift+L","action": "切换筛选","category": "文件" },
+        {"key": "Ctrl+T","action": "创建表","category": "搜索" },
+        {"key": "Ctrl+Alt+V","action": "选择性粘贴","category": "编辑" },
+        {"key": "Alt+=","action": "求和公式","category": "其他" },
+        {"key": "Ctrl+Shift+1","action": "格式化为数字","category": "文件" },
+        {"key": "Ctrl+Shift+4","action": "格式化为货币","category": "文件" },
+        {"key": "Ctrl+D","action": "向下填充","category": "编辑" },
+        {"key": "Ctrl+R","action": "向右填充","category": "编辑"
         }
       ]
     },
@@ -370,40 +121,13 @@
         "windows"
       ],
       "shortcuts": [
-        {
-          "key": "F5",
-          "action": "从头开始放映",
-          "category": "调试"
-        },
-        {
-          "key": "Shift+F5",
-          "action": "从当前页放映",
-          "category": "调试"
-        },
-        {
-          "key": "Ctrl+M",
-          "action": "新建幻灯片",
-          "category": "标签页"
-        },
-        {
-          "key": "B",
-          "action": "黑屏/取消黑屏",
-          "category": "演示"
-        },
-        {
-          "key": "W",
-          "action": "白屏/取消白屏",
-          "category": "演示"
-        },
-        {
-          "key": "E",
-          "action": "擦除笔",
-          "category": "演示"
-        },
-        {
-          "key": "Ctrl+P",
-          "action": "激光笔/笔",
-          "category": "文件"
+        {"key": "F5","action": "从头开始放映","category": "调试" },
+        {"key": "Shift+F5","action": "从当前页放映","category": "调试" },
+        {"key": "Ctrl+M","action": "新建幻灯片","category": "标签页" },
+        {"key": "B","action": "黑屏/取消黑屏","category": "演示" },
+        {"key": "W","action": "白屏/取消白屏","category": "演示" },
+        {"key": "E","action": "擦除笔","category": "演示" },
+        {"key": "Ctrl+P","action": "激光笔/笔","category": "文件"
         }
       ]
     }

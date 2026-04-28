@@ -11,95 +11,24 @@
         "windows"
       ],
       "shortcuts": [
-        {
-          "key": "Ctrl+N",
-          "action": "新建窗口",
-          "category": "窗口"
-        },
-        {
-          "key": "Ctrl+W",
-          "action": "关闭窗口",
-          "category": "窗口"
-        },
-        {
-          "key": "Ctrl+Shift+N",
-          "action": "新建文件夹",
-          "category": "文件"
-        },
-        {
-          "key": "Ctrl+Shift+E",
-          "action": "展开导航窗格",
-          "category": "导航"
-        },
-        {
-          "key": "Ctrl+F",
-          "action": "搜索",
-          "category": "搜索"
-        },
-        {
-          "key": "Alt+Up",
-          "action": "返回上级目录",
-          "category": "导航"
-        },
-        {
-          "key": "Alt+Left",
-          "action": "后退",
-          "category": "导航"
-        },
-        {
-          "key": "Alt+Right",
-          "action": "前进",
-          "category": "导航"
-        },
-        {
-          "key": "Alt+Enter",
-          "action": "属性",
-          "category": "文件"
-        },
-        {
-          "key": "F2",
-          "action": "重命名",
-          "category": "文件"
-        },
-        {
-          "key": "Delete",
-          "action": "删除到回收站",
-          "category": "文件"
-        },
-        {
-          "key": "Shift+Delete",
-          "action": "永久删除",
-          "category": "文件"
-        },
-        {
-          "key": "Ctrl+C",
-          "action": "复制",
-          "category": "编辑"
-        },
-        {
-          "key": "Ctrl+X",
-          "action": "剪切",
-          "category": "编辑"
-        },
-        {
-          "key": "Ctrl+V",
-          "action": "粘贴",
-          "category": "编辑"
-        },
-        {
-          "key": "Ctrl+A",
-          "action": "全选",
-          "category": "编辑"
-        },
-        {
-          "key": "Alt+D",
-          "action": "选中地址栏",
-          "category": "导航"
-        },
-        {
-          "key": "Ctrl+L",
-          "action": "选中地址栏",
-          "category": "导航"
+        {"key": "Ctrl+N","action": "新建窗口","category": "窗口" },
+        {"key": "Ctrl+W","action": "关闭窗口","category": "窗口" },
+        {"key": "Ctrl+Shift+N","action": "新建文件夹","category": "文件" },
+        {"key": "Ctrl+Shift+E","action": "展开导航窗格","category": "导航" },
+        {"key": "Ctrl+F","action": "搜索","category": "搜索" },
+        {"key": "Alt+Up","action": "返回上级目录","category": "导航" },
+        {"key": "Alt+Left","action": "后退","category": "导航" },
+        {"key": "Alt+Right","action": "前进","category": "导航" },
+        {"key": "Alt+Enter","action": "属性","category": "文件" },
+        {"key": "F2","action": "重命名","category": "文件" },
+        {"key": "Delete","action": "删除到回收站","category": "文件" },
+        {"key": "Shift+Delete","action": "永久删除","category": "文件" },
+        {"key": "Ctrl+C","action": "复制","category": "编辑" },
+        {"key": "Ctrl+X","action": "剪切","category": "编辑" },
+        {"key": "Ctrl+V","action": "粘贴","category": "编辑" },
+        {"key": "Ctrl+A","action": "全选","category": "编辑" },
+        {"key": "Alt+D","action": "选中地址栏","category": "导航" },
+        {"key": "Ctrl+L","action": "选中地址栏","category": "导航"
         }
       ],
       "type": "system"
@@ -114,50 +43,15 @@
         "windows"
       ],
       "shortcuts": [
-        {
-          "key": "Ctrl+D",
-          "action": "复制当前行",
-          "category": "编辑"
-        },
-        {
-          "key": "Ctrl+Shift+Up",
-          "action": "上移行",
-          "category": "文件"
-        },
-        {
-          "key": "Ctrl+Shift+Down",
-          "action": "下移行",
-          "category": "文件"
-        },
-        {
-          "key": "Ctrl+H",
-          "action": "查找替换",
-          "category": "编辑"
-        },
-        {
-          "key": "Ctrl+Shift+F",
-          "action": "在文件中查找",
-          "category": "文件"
-        },
-        {
-          "key": "Alt+Shift+Arrow",
-          "action": "列选择",
-          "category": "编辑"
-        },
-        {
-          "key": "Ctrl+Alt+F",
-          "action": "折叠代码",
-          "category": "编辑"
-        },
-        {
-          "key": "Alt+0",
-          "action": "折叠全部",
-          "category": "其他"
-        },
-        {
-          "key": "Alt+Shift+0",
-          "action": "展开全部",
-          "category": "编辑"
+        {"key": "Ctrl+D","action": "复制当前行","category": "编辑" },
+        {"key": "Ctrl+Shift+Up","action": "上移行","category": "文件" },
+        {"key": "Ctrl+Shift+Down","action": "下移行","category": "文件" },
+        {"key": "Ctrl+H","action": "查找替换","category": "编辑" },
+        {"key": "Ctrl+Shift+F","action": "在文件中查找","category": "文件" },
+        {"key": "Alt+Shift+Arrow","action": "列选择","category": "编辑" },
+        {"key": "Ctrl+Alt+F","action": "折叠代码","category": "编辑" },
+        {"key": "Alt+0","action": "折叠全部","category": "其他" },
+        {"key": "Alt+Shift+0","action": "展开全部","category": "编辑"
         }
       ]
     }
