@@ -1,10 +1,12 @@
 /**
  * edge-detector.js - 边缘悬停检测模块
- * 
+ *
  * 功能：
  * - 检测鼠标是否靠近屏幕右边缘（5px 区域）
  * - 鼠标靠近时显示窗口（opacity 0.9）
- * - 鼠标离开窗口 5 秒后自动隐藏（opacity 0.1）
+ * - 鼠标离开窗口 5 秒后自动隐藏（opacity 0.1）+ 贴边动画
+ * - 支持拖拽窗口到任意位置
+ * - 隐藏时自动贴边（滑动到最近的屏幕边缘）
  */
 
 const { screen } = require('electron');
@@ -31,6 +33,12 @@ class EdgeDetector {
     this.isPinned = false;
     /** @type {boolean} 上次检测时鼠标是否在面板上 */
     this._lastIsOverPanel = false;
+    /** @type {{x: number, y: number}|null} 用户拖拽后的窗口位置（用于恢复） */
+    this._lastDraggedPos = null;
+    /** @type {string} 隐藏时倾向的贴边方向 */
+    this._preferredSnapEdge = 'right';
+    /** @type {number|null} 滑动动画的 interval ID */
+    this._slideTimerId = null;
   }
 
   /**
@@ -56,6 +64,7 @@ class EdgeDetector {
     clearInterval(this.intervalId);
     this.isActive = false;
     this._cancelHideTimer();
+    this._cancelSlideTimer();
     console.log('[EdgeDetector] 停止边缘检测');
   }
 
@@ -87,6 +96,7 @@ class EdgeDetector {
       if (distanceFromRight <= this.edgeWidth && distanceFromRight >= 0) {
         // 取消隐藏计时器
         this._cancelHideTimer();
+        this._cancelSlideTimer(); // 取消贴边动画
 
         // 显示窗口
         if (!this.isWindowVisible) {
@@ -111,9 +121,9 @@ class EdgeDetector {
   }
 
   /**
-   * 显示窗口
-   * @private
+   * 显示窗口（带位置恢复）
    * @param {Display} display - 目标显示器
+   * @private
    */
   _showWindow(display) {
     if (!this.mainWindow || this.mainWindow.isDestroyed()) return;
@@ -121,26 +131,46 @@ class EdgeDetector {
     const { width, height } = display.workAreaSize;
     const { x: displayX, y: displayY } = display.workArea;
     const windowWidth = 300;
+    const windowHeight = Math.min(600, height);
 
-    // 定位到屏幕右边缘
-    this.mainWindow.setPosition(
-      displayX + width - windowWidth,
-      displayY
-    );
+    let targetX;
+    if (this._lastDraggedPos) {
+      // 恢复用户拖拽的位置
+      targetX = this._lastDraggedPos.x;
+    } else {
+      // 默认：屏幕右边缘
+      targetX = displayX + width - windowWidth;
+    }
 
-    // 设置高度自适应（初始高度）
-    this.mainWindow.setSize(windowWidth, Math.min(600, height));
-
-    // 显示并设置透明度
+    this.mainWindow.setPosition(targetX, displayY);
+    this.mainWindow.setSize(windowWidth, windowHeight);
     this.mainWindow.setOpacity(0.9);
     this.mainWindow.show();
 
     this.isWindowVisible = true;
-    console.log('[EdgeDetector] 显示窗口');
+    console.log(`[EdgeDetector] 显示窗口 (x=${targetX})`);
   }
 
   /**
-   * 隐藏窗口（降低透明度）
+   * 计算离窗口最近的屏幕边缘
+   * @returns {'left'|'right'} 边缘方向
+   * @private
+   */
+  _getNearestEdge() {
+    if (!this.mainWindow || this.mainWindow.isDestroyed()) return 'right';
+    const bounds = this.mainWindow.getBounds();
+    const display = screen.getDisplayNearestPoint({ x: bounds.x, y: bounds.y });
+    const { x: dx, width: dw } = display.workArea;
+
+    const centerX = bounds.x + bounds.width / 2;
+    const distLeft = centerX - dx;
+    const distRight = (dx + dw) - centerX;
+
+    return distLeft <= distRight ? 'left' : 'right';
+  }
+
+  /**
+   * 隐藏窗口（降低透明度 + 贴边动画）
    * @private
    */
   _hideWindow() {
@@ -151,9 +181,46 @@ class EdgeDetector {
     }
     if (!this.mainWindow || this.mainWindow.isDestroyed()) return;
 
-    this.mainWindow.setOpacity(0.1);
-    this.isWindowVisible = false;
-    console.log('[EdgeDetector] 隐藏窗口');
+    // 取消进行中的滑动动画
+    this._cancelSlideTimer();
+
+    const currentBounds = this.mainWindow.getBounds();
+    const targetEdge = this._getNearestEdge();
+    const display = screen.getDisplayNearestPoint({ x: currentBounds.x, y: currentBounds.y });
+    const targetX = targetEdge === 'right'
+      ? display.workArea.x + display.workAreaSize.width - currentBounds.width
+      : display.workArea.x;
+
+    // 如果已经在目标位置（或附近），直接隐藏
+    if (Math.abs(currentBounds.x - targetX) < 5) {
+      this.mainWindow.setOpacity(0.1);
+      this.isWindowVisible = false;
+      this._preferredSnapEdge = targetEdge;
+      console.log(`[EdgeDetector] 隐藏窗口（已贴边: ${targetEdge}）`);
+      return;
+    }
+
+    // 滑动动画：200ms 内分步移动到边缘
+    const steps = 8;
+    const interval = 25;
+    const deltaX = (targetX - currentBounds.x) / steps;
+    let step = 0;
+
+    this._slideTimerId = setInterval(() => {
+      step++;
+      if (step >= steps) {
+        clearInterval(this._slideTimerId);
+        this._slideTimerId = null;
+        this.mainWindow.setPosition(targetX, currentBounds.y);
+        this.mainWindow.setOpacity(0.1);
+        this.isWindowVisible = false;
+        this._preferredSnapEdge = targetEdge;
+        console.log(`[EdgeDetector] 隐藏窗口（贴边动画: ${targetEdge}）`);
+      } else {
+        const newX = Math.round(currentBounds.x + deltaX * step);
+        this.mainWindow.setPosition(newX, currentBounds.y);
+      }
+    }, interval);
   }
 
   /**
@@ -195,8 +262,9 @@ class EdgeDetector {
   setPinned(pinned) {
     this.isPinned = pinned;
     if (pinned) {
-      // 固定模式：取消待执行的隐藏计时器
+      // 固定模式：取消待执行的隐藏计时器 + 滑动动画
       this._cancelHideTimer();
+      this._cancelSlideTimer();
       console.log('[EdgeDetector] 已固定，取消隐藏计时器');
     } else {
       // 取消固定：根据鼠标位置决定是否重启计时器
@@ -205,6 +273,16 @@ class EdgeDetector {
       }
       console.log('[EdgeDetector] 已取消固定');
     }
+  }
+
+  /**
+   * 更新窗口位置（用户拖拽结束后调用）
+   * @param {number} x - 窗口 x 坐标
+   * @param {number} y - 窗口 y 坐标
+   */
+  updateDraggedPosition(x, y) {
+    this._lastDraggedPos = { x, y };
+    console.log(`[EdgeDetector] 记录拖拽位置: (${x}, ${y})`);
   }
 
   /**
@@ -219,6 +297,17 @@ class EdgeDetector {
   }
 
   /**
+   * 取消滑动动画
+   * @private
+   */
+  _cancelSlideTimer() {
+    if (this._slideTimerId) {
+      clearInterval(this._slideTimerId);
+      this._slideTimerId = null;
+    }
+  }
+
+  /**
    * 强制显示窗口（用于全局快捷键切换）
    */
   forceShow(display = null) {
@@ -227,6 +316,7 @@ class EdgeDetector {
       display = screen.getDisplayNearestPoint(point);
     }
     this._cancelHideTimer();
+    this._cancelSlideTimer();
     this._showWindow(display);
   }
 

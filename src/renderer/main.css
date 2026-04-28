@@ -47,7 +47,7 @@ html, body {
   box-shadow: 0 4px 20px var(--shadow-color);
 }
 
-/* ========== 标题栏 ========== */
+/* ========== 标题栏（可拖拽） ========== */
 .header {
   display: flex;
   align-items: center;
@@ -55,6 +55,8 @@ html, body {
   padding: 16px;
   background: linear-gradient(135deg, var(--accent-color), #4834d4);
   border-bottom: 1px solid var(--border-color);
+  cursor: move; /* 拖拽手型 */
+  user-select: none;
 }
 
 .app-icon {

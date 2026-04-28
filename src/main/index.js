@@ -69,6 +69,9 @@ class KeySenseApp {
       this.mainWindow = null;
     });
 
+    // 允许拖拽时改变位置（无边框窗口需要）
+    this.mainWindow.setResizable(true);
+
     // 防止窗口失去焦点时隐藏（由边缘检测器控制）
     this.mainWindow.on('blur', () => {
       // 可选：失去焦点时的行为
@@ -139,10 +142,32 @@ class KeySenseApp {
       return this.dataManager.getAllApps();
     });
 
-    // 渲染进程设置固定状态
-    ipcMain.on('set-pinned', (event, pinned) => {
+    // 渲染进程设置固定状态（使用 handle 支持 Promise）
+    ipcMain.handle('set-pinned', (event, pinned) => {
       console.log(`[Main] 收到 set-pinned: ${pinned}`);
       this.edgeDetector.setPinned(pinned);
+      return true; // 确认成功
+    });
+
+    // 验证固定状态（调试用）
+    ipcMain.handle('verify-pinned', () => {
+      return this.edgeDetector.isPinned;
+    });
+
+    // 渲染进程获取窗口位置（用于拖拽）
+    ipcMain.handle('get-window-bounds', () => {
+      if (this.mainWindow && !this.mainWindow.isDestroyed()) {
+        return this.mainWindow.getBounds();
+      }
+      return null;
+    });
+
+    // 渲染进程更新拖拽后的窗口位置
+    ipcMain.on('update-dragged-position', (event, x, y) => {
+      if (this.mainWindow && !this.mainWindow.isDestroyed()) {
+        this.mainWindow.setPosition(x, y);
+      }
+      this.edgeDetector.updateDraggedPosition(x, y);
     });
 
     // 窗口检测器检测到窗口变化时，通知渲染进程

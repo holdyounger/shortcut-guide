@@ -45,10 +45,47 @@ contextBridge.exposeInMainWorld('keySenseAPI', {
   /**
    * 设置窗口固定状态
    * @param {boolean} pinned - 是否固定
+   * @returns {Promise<boolean>} 是否设置成功
    */
   setPinned: (pinned) => {
-    ipcRenderer.send('set-pinned', pinned);
+    try {
+      // 使用 invoke 代替 send，确保消息送达且有错误反馈
+      const result = ipcRenderer.invoke('set-pinned', pinned);
+      // 异步验证：确保主进程状态已更新
+      result.then(success => {
+        if (success) {
+          console.log(`[Preload] setPinned(${pinned}) 确认成功`);
+        } else {
+          console.error(`[Preload] setPinned(${pinned}) 主进程返回失败`);
+        }
+      }).catch(err => {
+        console.error(`[Preload] setPinned(${pinned}) 失败:`, err);
+      });
+      return result;
+    } catch (err) {
+      console.error('[Preload] setPinned 例外:', err);
+      return Promise.reject(err);
+    }
   },
+
+  /**
+   * 验证主进程固定状态（调试用）
+   * @returns {Promise<boolean>}
+   */
+  verifyPinned: () => ipcRenderer.invoke('verify-pinned'),
+
+  /**
+   * 获取窗口位置和尺寸（用于拖拽）
+   * @returns {Promise<{x:number,y:number,width:number,height:number}|null>}
+   */
+  getWindowBounds: () => ipcRenderer.invoke('get-window-bounds'),
+
+  /**
+   * 更新窗口拖拽位置
+   * @param {number} x
+   * @param {number} y
+   */
+  updateDraggedPosition: (x, y) => ipcRenderer.send('update-dragged-position', x, y),
 });
 
 console.log('[Preload] API 已暴露');
