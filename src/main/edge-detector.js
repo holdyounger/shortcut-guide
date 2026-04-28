@@ -188,12 +188,15 @@ class EdgeDetector {
 
     this.mainWindow.setPosition(targetX, displayY);
     this.mainWindow.setSize(windowWidth, windowHeight);
-    // Guard: 只有 opacity 需要变化时才设置，避免重复触发动画导致列表闪烁
+    // Guard: 只在 opacity 需要变化时才设置（避免重复触发 CSS transition 导致列表闪烁）
     const currentOpacity = this.mainWindow.getOpacity();
     if (currentOpacity < 1) {
       this.mainWindow.setOpacity(1);
     }
-    this.mainWindow.show();
+    // Guard: 只在窗口实际隐藏时才调用 show()（避免重复触发窗口激活导致闪烁）
+    if (!this.mainWindow.isVisible()) {
+      this.mainWindow.show();
+    }
 
     this.isWindowVisible = true;
     console.log(`[EdgeDetector] 显示窗口 (x=${targetX})`);
