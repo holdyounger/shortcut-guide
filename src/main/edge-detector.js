@@ -284,7 +284,9 @@ class EdgeDetector {
    * @param {number} y - 窗口 y 坐标
    */
   updateDraggedPosition(x, y) {
-    this._lastDraggedPos = { x, y };
+    // 保留当前 y 坐标（贴边隐藏只改变 x，y 不变）
+    const currentY = this._lastDraggedPos ? this._lastDraggedPos.y : y;
+    this._lastDraggedPos = { x, y: y !== undefined ? y : currentY };
     console.log(`[EdgeDetector] 记录拖拽位置: (${x}, ${y})`);
   }
 

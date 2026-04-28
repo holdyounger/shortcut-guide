@@ -84,8 +84,9 @@ contextBridge.exposeInMainWorld('keySenseAPI', {
    * 更新窗口拖拽位置
    * @param {number} x
    * @param {number} y
+   * @returns {Promise<boolean>}
    */
-  updateDraggedPosition: (x, y) => ipcRenderer.send('update-dragged-position', x, y),
+  updateDraggedPosition: (x, y) => ipcRenderer.invoke('update-dragged-position', x, y),
 });
 
 console.log('[Preload] API 已暴露');

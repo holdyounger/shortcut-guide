@@ -1,6 +1,6 @@
 {
   "name": "shortcut-guide",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "跨平台App快捷键提示器 - 快速唤出快捷键指南，自动隐藏到系统边框",
   "main": "src/main/index.js",
   "scripts": {

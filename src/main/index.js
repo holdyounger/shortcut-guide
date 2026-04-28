@@ -160,11 +160,12 @@ class KeySenseApp {
     });
 
     // 渲染进程更新拖拽后的窗口位置
-    ipcMain.on('update-dragged-position', (event, x, y) => {
+    ipcMain.handle('update-dragged-position', (event, x, y) => {
       if (this.mainWindow && !this.mainWindow.isDestroyed()) {
-        this.mainWindow.setPosition(x, y);
+        this.mainWindow.setPosition(Math.round(x), Math.round(y));
       }
-      this.edgeDetector.updateDraggedPosition(x, y);
+      this.edgeDetector.updateDraggedPosition(Math.round(x), Math.round(y));
+      return true;
     });
 
     // 窗口检测器检测到窗口变化时，通知渲染进程

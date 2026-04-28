@@ -14,6 +14,11 @@ const state = {
   filteredShortcuts: null,
   searchQuery: '',
   isPinned: false,
+  isDragging: false,
+  dragStartX: 0,
+  dragStartY: 0,
+  windowStartX: 0,
+  windowStartY: 0,
 };
 
 // ========== DOM 元素 ==========
@@ -40,10 +45,63 @@ async function init() {
     togglePin();
   });
 
+  // 设置拖拽事件
+  setupDragEvents();
+
   // 初始加载
   await loadCurrentApp();
 
   console.log('[Renderer] 初始化完成');
+}
+
+/**
+ * 设置窗口拖拽事件
+ */
+function setupDragEvents() {
+  document.body.classList.add('draggable-region');
+
+  document.addEventListener('mousedown', async (e) => {
+    // 跳过交互元素
+    if (e.target.closest('.pin-button')) return;
+    if (e.target.closest('.search-box')) return;
+    if (e.target.closest('.shortcuts-container')) return;
+
+    state.isDragging = true;
+    state.dragStartX = e.screenX;
+    state.dragStartY = e.screenY;
+
+    const bounds = await window.keySenseAPI.getWindowBounds();
+    if (bounds) {
+      state.windowStartX = bounds.x;
+      state.windowStartY = bounds.y;
+    }
+    console.log(`[Drag] 开始拖拽: screen(${state.dragStartX}, ${state.dragStartY}), win(${state.windowStartX}, ${state.windowStartY})`);
+  });
+
+  document.addEventListener('mousemove', (e) => {
+    if (!state.isDragging) return;
+
+    const deltaX = e.screenX - state.dragStartX;
+    const deltaY = e.screenY - state.dragStartY;
+    const newX = state.windowStartX + deltaX;
+    const newY = state.windowStartY + deltaY;
+
+    // 直接移动窗口（实时跟随）
+    window.keySenseAPI.updateDraggedPosition(newX, newY);
+  });
+
+  document.addEventListener('mouseup', (e) => {
+    if (!state.isDragging) return;
+
+    state.isDragging = false;
+    const deltaX = e.screenX - state.dragStartX;
+    const deltaY = e.screenY - state.dragStartY;
+    const finalX = state.windowStartX + deltaX;
+    const finalY = state.windowStartY + deltaY;
+
+    console.log(`[Drag] 结束拖拽: final(${finalX}, ${finalY})`);
+    window.keySenseAPI.updateDraggedPosition(finalX, finalY);
+  });
 }
 
 /**
