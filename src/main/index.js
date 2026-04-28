@@ -58,8 +58,6 @@ class KeySenseApp {
 
     // 初始显示（立即可见，欢迎页随之弹出）
     this.mainWindow.show();
-    // 显示欢迎页/快捷键面板
-    this.edgeDetector.showWelcome();
 
     // 开发模式下打开 DevTools
     if (process.env.NODE_ENV === 'development') {
@@ -100,6 +98,8 @@ class KeySenseApp {
   initEdgeDetector() {
     this.edgeDetector = new EdgeDetector(this.mainWindow);
     this.edgeDetector.start();
+    // 立即显示窗口，让欢迎页可见
+    this.edgeDetector.showWelcome();
   }
 
   /**
