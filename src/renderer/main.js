@@ -103,8 +103,9 @@ function checkWelcome() {
         console.log('[Renderer] 首次启动，显示欢迎页');
       }
     } else {
-      // 非首次启动：允许立即启动倒计时
+      // 非首次启动：直接通知主进程允许倒计时
       state.welcomeDismissed = true;
+      window.keySenseAPI.welcomeDismissed();
       console.log('[Renderer] 非首次启动，跳过欢迎页');
     }
   } catch (err) {

@@ -202,7 +202,7 @@ class KeySenseApp {
           });
         }
       }
-    }, 1000); // 每 1000ms 同步一次
+    }, 500); // 每 500ms 同步一次
 
     console.log('[Main] IPC 通信设置完成');
   }
