@@ -3,8 +3,11 @@
  *
  * 持续检测当前活动窗口的进程名，每 200ms 检测一次
  * 使用 active-win npm 包获取鼠标悬停/活动窗口的进程信息
+ * 通过 processId 查询系统获取确定性的进程名
  * 支持 Windows / macOS / Linux 跨平台
  */
+
+const { execFile } = require('child_process');
 
 let activeWin;
 let initError = null;
@@ -27,8 +30,41 @@ function ensureInitialized() {
 }
 
 /**
+ * 通过进程 PID 获取实际的进程名（确定性，不依赖窗口标题）
+ * @param {number} pid - 进程 ID
+ * @returns {Promise<string|null>} 进程名，如 'chrome.exe'
+ */
+function getProcessNameByPid(pid) {
+  return new Promise((resolve) => {
+    // Windows: 使用 tasklist 获取进程名（最稳定的方案）
+    execFile(
+      'tasklist',
+      ['/FI', `PID eq ${pid}`, '/FO', 'CSV', '/NH'],
+      { encoding: 'utf8', timeout: 1000, windowsHide: true },
+      (error, stdout) => {
+        if (error || !stdout || !stdout.trim()) {
+          resolve(null);
+          return;
+        }
+        // 输出格式: "Image Name","PID","Session Name","Session#","Mem Usage"
+        // 示例: "\"chrome.exe\",\"12345\",\"Console\",\"1\",\"102400 K\""
+        const firstLine = stdout.split('\n')[0];
+        // 第一个字段是进程名，两端有引号包裹
+        const match = firstLine.match(/"([^"]+)"/);
+        if (match && match[1]) {
+          resolve(match[1]); // 如 'chrome.exe'
+        } else {
+          resolve(null);
+        }
+      }
+    );
+  });
+}
+
+/**
  * 检测鼠标指针下的窗口进程名
- * 使用 active-win 获取当前活动窗口（focused window）的进程名
+ * 使用 active-win 获取当前活动窗口的进程名
+ * 通过 processId + tasklist 查询获取确定性进程名（不依赖 owner.name）
  * @returns {Promise<string|null>} 活动窗口的进程名，如 'chrome.exe'，失败时返回 null
  */
 async function getActiveProcess() {
@@ -40,18 +76,21 @@ async function getActiveProcess() {
     // active-win 返回当前前台窗口的信息
     const result = await activeWin();
 
-    if (!result) {
+    if (!result || !result.owner) {
       return null;
     }
 
-    // result.owner.name 是进程名（不含路径），如 'chrome.exe', 'Code.exe'
-    if (result.owner && result.owner.name) {
-      return result.owner.name;
+    // 优先使用 processId + tasklist 获取真实进程名（确定性）
+    if (result.owner.processId) {
+      const processName = await getProcessNameByPid(result.owner.processId);
+      if (processName) {
+        return processName; // 如 'chrome.exe', 'explorer.exe', 'Code.exe'
+      }
     }
 
-    // 备选：从 title 获取进程名（某些情况下可能包含进程信息）
-    if (result.title) {
-      return null; // title 不够精确，返回 null 让系统显示"未知"
+    // 降级方案：直接使用 owner.name
+    if (result.owner.name) {
+      return result.owner.name;
     }
 
     return null;
@@ -133,7 +172,7 @@ class WindowDetector {
       }
     }, 200);
 
-    console.log('[WindowDetector] 启动检测（active-win 实现）');
+    console.log('[WindowDetector] 启动检测（active-win + tasklist 实现）');
   }
 
   /**
