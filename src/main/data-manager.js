@@ -1,8 +1,8 @@
 /**
  * data-manager.js - 快捷键数据管理模块
- * 
+ *
  * 负责：
- * - 加载内置 shortcuts.json
+ * - 加载内置 shortcuts.json / apps/ 目录
  * - 加载用户自定义 user-custom.json
  * - 根据进程名匹配应用（模糊匹配）
  * - 合并/覆盖数据
@@ -17,12 +17,14 @@ class DataManager {
     this.builtInData = null;
     /** @type {Object|null} 用户自定义数据 */
     this.userData = null;
-    /** @type {Object} 合并后的完整数据 */
+    /** @type {Object} 合并后的完整数据 { appId: { name, type, processNames, platforms, shortcuts } } */
     this.mergedData = {};
     /** @type {Map<string, string>} 进程名 -> 应用ID 的快速查找表 */
     this.processMap = new Map();
     /** @type {string} data 目录路径 */
     this.dataDir = path.join(__dirname, '../../data');
+    /** @type {string} apps 目录路径 */
+    this.appsDir = path.join(this.dataDir, 'apps');
   }
 
   /**
@@ -37,10 +39,32 @@ class DataManager {
   }
 
   /**
-   * 加载内置 shortcuts.json
+   * 加载内置快捷键数据
+   * 优先从 apps/ 目录加载（type 分类文件），不存在则回退到 shortcuts.json
    * @private
    */
   _loadBuiltInData() {
+    // 优先从 apps/ 目录加载（新的分类结构）
+    if (fs.existsSync(this.appsDir)) {
+      try {
+        const files = fs.readdirSync(this.appsDir).filter(f => f.endsWith('.json'));
+        const allApps = {};
+        for (const file of files) {
+          const typeFile = path.join(this.appsDir, file);
+          const raw = fs.readFileSync(typeFile, 'utf-8');
+          const data = JSON.parse(raw);
+          // data.apps 是 { appId: appData } 的字典
+          Object.assign(allApps, data.apps || {});
+        }
+        this.builtInData = { apps: allApps };
+        console.log(`[DataManager] 从 apps/ 目录加载 ${Object.keys(allApps).length} 个应用`);
+        return;
+      } catch (err) {
+        console.error(`[DataManager] 从 apps/ 加载失败，回退到 shortcuts.json: ${err.message}`);
+      }
+    }
+
+    // 回退：加载原始 shortcuts.json
     const filePath = path.join(this.dataDir, 'shortcuts.json');
     try {
       const raw = fs.readFileSync(filePath, 'utf-8');
@@ -79,11 +103,12 @@ class DataManager {
    * @private
    */
   _mergeData() {
-    // 先复制内置数据
+    // 先复制内置数据（包含 type 字段）
     const builtInApps = this.builtInData.apps || {};
     for (const [appId, appData] of Object.entries(builtInApps)) {
       this.mergedData[appId] = {
         name: appData.name,
+        type: appData.type || 'system',       // 保留 type 字段
         processNames: [...(appData.processNames || [])],
         platforms: [...(appData.platforms || [])],
         shortcuts: [...(appData.shortcuts || [])],
@@ -114,6 +139,7 @@ class DataManager {
         // 新应用：直接添加
         this.mergedData[appId] = {
           name: appData.name,
+          type: appData.type || 'system',
           processNames: [...(appData.processNames || [])],
           platforms: [...(appData.platforms || [])],
           shortcuts: [...(appData.shortcuts || [])],
@@ -197,14 +223,53 @@ class DataManager {
 
   /**
    * 获取所有已注册的应用列表
-   * @returns {Array} 应用列表 [{ appId, name, processNames }]
+   * @returns {Array} 应用列表 [{ appId, name, type, processNames }]
    */
   getAllApps() {
     return Object.entries(this.mergedData).map(([appId, data]) => ({
       appId,
       name: data.name,
+      type: data.type,
       processNames: data.processNames,
     }));
+  }
+
+  /**
+   * 获取所有应用，按 type 分组
+   * @returns {Object} 按 type 分组的应用 { type: [{ appId, name, processNames }] }
+   */
+  getAppsByType() {
+    const grouped = {};
+    for (const [appId, data] of Object.entries(this.mergedData)) {
+      const type = data.type || 'system';
+      if (!grouped[type]) grouped[type] = [];
+      grouped[type].push({ appId, name: data.name, processNames: data.processNames });
+    }
+    return grouped;
+  }
+
+  /**
+   * 获取所有支持的 type 列表
+   * @returns {Array} type 列表 [{ id, name }]
+   */
+  getTypes() {
+    const typeNames = {
+      development: '开发工具',
+      communication: '通信聊天',
+      office: '办公效率',
+      media: '媒体设计',
+      system: '系统工具',
+    };
+    const seen = new Set();
+    const result = [];
+    for (const data of Object.values(this.mergedData)) {
+      const t = data.type || 'system';
+      if (!seen.has(t)) {
+        seen.add(t);
+        result.push({ id: t, name: typeNames[t] || t });
+      }
+    }
+    return result;
   }
 
   /**

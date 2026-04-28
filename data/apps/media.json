@@ -1,0 +1,78 @@
+{
+  "apps": {
+    "photoshop": {
+      "type": "media",
+      "name": "Adobe Photoshop",
+      "processNames": [
+        "Photoshop.exe"
+      ],
+      "platforms": [
+        "windows"
+      ],
+      "shortcuts": [
+        {
+          "items": [
+            [
+              "Ctrl+T",
+              "自由变换"
+            ],
+            [
+              "Ctrl+J",
+              "复制图层"
+            ],
+            [
+              "Ctrl+G",
+              "图层编组"
+            ],
+            [
+              "Ctrl+E",
+              "合并图层"
+            ],
+            [
+              "Ctrl+Shift+U",
+              "去色"
+            ],
+            [
+              "Ctrl+L",
+              "色阶"
+            ],
+            [
+              "Ctrl+M",
+              "曲线"
+            ],
+            [
+              "Ctrl+U",
+              "色相/饱和度"
+            ],
+            [
+              "Ctrl+B",
+              "色彩平衡"
+            ],
+            [
+              "V",
+              "移动工具"
+            ],
+            [
+              "C",
+              "裁剪工具"
+            ],
+            [
+              "M",
+              "选框工具"
+            ],
+            [
+              "L",
+              "套索工具"
+            ],
+            [
+              "W",
+              "魔棒工具"
+            ]
+          ]
+        }
+      ]
+    }
+  },
+  "type": "media",
+  "count": 1
+}
