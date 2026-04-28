@@ -41,6 +41,14 @@ contextBridge.exposeInMainWorld('keySenseAPI', {
   removeAppChangedListener: () => {
     ipcRenderer.removeAllListeners('app-changed');
   },
+
+  /**
+   * 设置窗口固定状态
+   * @param {boolean} pinned - 是否固定
+   */
+  setPinned: (pinned) => {
+    ipcRenderer.send('set-pinned', pinned);
+  },
 });
 
 console.log('[Preload] API 已暴露');

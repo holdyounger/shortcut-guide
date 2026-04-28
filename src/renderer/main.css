@@ -262,3 +262,93 @@ html, body {
 .shortcut-item.highlighted {
   background: rgba(108, 92, 231, 0.3);
 }
+
+/* ========== 固定按钮 ========== */
+.pin-button {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1.5px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.5);
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.15s ease,
+    box-shadow 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 两个图标用 position:absolute 叠放 */
+.pin-icon {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  will-change: transform;
+  position: absolute;
+}
+
+/* 默认：显示未固定图标 */
+.pin-icon--unpinned { display: block; }
+.pin-icon--pinned   { display: none; }
+
+/* 悬停态 */
+.pin-button:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.25);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.pin-button:hover .pin-icon {
+  transform: rotate(-15deg) scale(1.1);
+}
+
+/* 按下态 */
+.pin-button:active {
+  transform: scale(0.9);
+}
+
+/* 已固定状态（.pinned）—— 图标切换 + 样式变化 */
+.pin-button.pinned {
+  background: rgba(108, 92, 231, 0.35);
+  border-color: #6c5ce7;
+  color: #c4b5fd;
+  box-shadow: 0 0 16px rgba(108, 92, 231, 0.5);
+  animation: pinPulse 2.5s ease-in-out infinite;
+}
+
+/* pinned 时切换图标 */
+.pin-button.pinned .pin-icon--unpinned { display: none; }
+.pin-button.pinned .pin-icon--pinned   { display: block; }
+.pin-button.pinned .pin-icon { transform: rotate(0deg) scale(1.1); }
+.pin-button.pinned:hover .pin-icon { transform: rotate(-10deg) scale(1.2); }
+
+/* 脉冲动画 */
+@keyframes pinPulse {
+  0%   { box-shadow: 0 0 8px rgba(108, 92, 231, 0.3); }
+  50%  { box-shadow: 0 0 20px rgba(108, 92, 231, 0.65); }
+  100% { box-shadow: 0 0 8px rgba(108, 92, 231, 0.3); }
+}
+
+/* ========== Footer 固定状态文字 ========== */
+.footer-pin-status {
+  font-size: 11px;
+  color: var(--accent-hover);
+  font-weight: 500;
+  opacity: 0;
+  transform: translateX(8px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  white-space: nowrap;
+}
+
+.footer-pin-status.visible {
+  opacity: 1;
+  transform: translateX(0);
+}

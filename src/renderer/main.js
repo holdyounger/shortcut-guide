@@ -13,6 +13,7 @@ const state = {
   shortcutsByCategory: {},
   filteredShortcuts: null,
   searchQuery: '',
+  isPinned: false,
 };
 
 // ========== DOM 元素 ==========
@@ -22,6 +23,8 @@ const elements = {
   searchInput: document.getElementById('searchInput'),
   shortcutsContainer: document.getElementById('shortcutsContainer'),
   totalCount: document.getElementById('totalCount'),
+  pinButton: document.getElementById('pinButton'),
+  footerPinStatus: document.getElementById('footerPinStatus'),
 };
 
 // ========== 初始化 ==========
@@ -31,6 +34,11 @@ async function init() {
 
   // 设置搜索监听
   elements.searchInput.addEventListener('input', handleSearch);
+
+  // 设置固定按钮监听
+  elements.pinButton.addEventListener('click', () => {
+    togglePin();
+  });
 
   // 初始加载
   await loadCurrentApp();
@@ -176,6 +184,29 @@ function showEmptyState(message) {
     </div>
   `;
   elements.totalCount.textContent = '0 个快捷键';
+}
+
+// ========== 固定按钮功能 ==========
+function togglePin() {
+  state.isPinned = !state.isPinned;
+  updatePinUI();
+  window.keySenseAPI.setPinned(state.isPinned);
+}
+
+function updatePinUI() {
+  const { pinButton, footerPinStatus } = elements;
+
+  if (state.isPinned) {
+    pinButton.classList.add('pinned');
+    pinButton.title = '取消固定（恢复自动隐藏）';
+    footerPinStatus.textContent = '已固定 · 面板保持显示';
+    footerPinStatus.classList.add('visible');
+  } else {
+    pinButton.classList.remove('pinned');
+    pinButton.title = '固定窗口（保持显示）';
+    footerPinStatus.textContent = '';
+    footerPinStatus.classList.remove('visible');
+  }
 }
 
 // 启动

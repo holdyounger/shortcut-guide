@@ -139,6 +139,12 @@ class KeySenseApp {
       return this.dataManager.getAllApps();
     });
 
+    // 渲染进程设置固定状态
+    ipcMain.on('set-pinned', (event, pinned) => {
+      console.log(`[Main] 收到 set-pinned: ${pinned}`);
+      this.edgeDetector.setPinned(pinned);
+    });
+
     // 窗口检测器检测到窗口变化时，通知渲染进程
     // 使用 getLastMatchedInfo 读取 windowDetector 缓存的匹配数据，避免重复匹配
     setInterval(() => {

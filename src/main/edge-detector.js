@@ -27,6 +27,10 @@ class EdgeDetector {
     this.hideDelay = 5000;
     /** @type {number} 检测间隔 (ms) */
     this.checkInterval = 100;
+    /** @type {boolean} 固定状态（固定时不自动隐藏） */
+    this.isPinned = false;
+    /** @type {boolean} 上次检测时鼠标是否在面板上 */
+    this._lastIsOverPanel = false;
   }
 
   /**
@@ -91,9 +95,14 @@ class EdgeDetector {
       }
       // 鼠标不在边缘区域
       else if (this.isWindowVisible) {
+        // 记录鼠标位置状态，用于取消固定后判断是否需要重启计时器
+        this._lastIsOverPanel = isOverPanel;
         // 只有当鼠标不在面板上时，才启动隐藏计时器
         if (!isOverPanel) {
           this._startHideTimer();
+        } else {
+          // 鼠标在面板上：确保没有残留的计时器
+          this._cancelHideTimer();
         }
       }
     } catch (err) {
@@ -135,6 +144,11 @@ class EdgeDetector {
    * @private
    */
   _hideWindow() {
+    // 第四重保险：隐藏前最后检查固定状态
+    if (this.isPinned) {
+      console.log('[EdgeDetector] _hideWindow: 已固定，拒绝隐藏');
+      return;
+    }
     if (!this.mainWindow || this.mainWindow.isDestroyed()) return;
 
     this.mainWindow.setOpacity(0.1);
@@ -147,13 +161,50 @@ class EdgeDetector {
    * @private
    */
   _startHideTimer() {
-    // 如果已经有计时器在运行，不重复创建
-    if (this.hideTimerId) return;
+    // 第一重保险：固定状态直接跳过
+    if (this.isPinned) {
+      console.log('[EdgeDetector] _startHideTimer: 已固定，跳过');
+      return;
+    }
+    // 第二重保险：已有计时器不重复创建
+    if (this.hideTimerId) {
+      return;
+    }
+    // 第三重保险：鼠标在面板上时不启动
+    if (this._lastIsOverPanel) {
+      return;
+    }
 
     this.hideTimerId = setTimeout(() => {
+      // 计时器触发时再次检查（三重保险）
+      if (this.isPinned) {
+        console.log('[EdgeDetector] 计时器触发时已固定，取消隐藏');
+        this.hideTimerId = null;
+        return;
+      }
       this._hideWindow();
       this.hideTimerId = null;
     }, this.hideDelay);
+    console.log(`[EdgeDetector] 启动隐藏计时器 (${this.hideDelay}ms)`);
+  }
+
+  /**
+   * 设置固定状态
+   * @param {boolean} pinned - 是否固定
+   */
+  setPinned(pinned) {
+    this.isPinned = pinned;
+    if (pinned) {
+      // 固定模式：取消待执行的隐藏计时器
+      this._cancelHideTimer();
+      console.log('[EdgeDetector] 已固定，取消隐藏计时器');
+    } else {
+      // 取消固定：根据鼠标位置决定是否重启计时器
+      if (!this._lastIsOverPanel) {
+        this._startHideTimer();
+      }
+      console.log('[EdgeDetector] 已取消固定');
+    }
   }
 
   /**

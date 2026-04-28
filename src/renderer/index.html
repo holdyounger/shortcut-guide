@@ -16,6 +16,21 @@
         <h1 class="app-name" id="appName">检测中...</h1>
         <span class="app-process" id="appProcess"></span>
       </div>
+      <!-- 固定按钮：两套图标，清晰区分两种状态 -->
+      <button class="pin-button" id="pinButton" title="固定窗口（保持显示）">
+        <!-- 未固定图标：描边图钉 -->
+        <svg class="pin-icon pin-icon--unpinned" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15 7H16V5C16 3.9 15.1 3 14 3H10C8.9 3 8 3.9 8 5V7H9C9.6 7 10 7.4 10 8V13.5L7.5 16V18H11.3V22H12.7V18H16.5V16L14 13.5V8C14 7.4 14.4 7 15 7Z"
+            fill="none" stroke="currentColor" stroke-width="1.8"
+            stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <!-- 已固定图标：实心图钉 + 圆点标记 -->
+        <svg class="pin-icon pin-icon--pinned" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="5" r="2.5" fill="currentColor"/>
+          <path d="M15 7H16V5C16 3.9 15.1 3 14 3H10C8.9 3 8 3.9 8 5V7H9C9.6 7 10 7.4 10 8V13.5L7.5 16V18H11.3V22H12.7V18H16.5V16L14 13.5V8C14 7.4 14.4 7 15 7Z"
+            fill="currentColor" opacity="0.85"/>
+        </svg>
+      </button>
     </header>
 
     <!-- 搜索框 -->
@@ -31,6 +46,7 @@
     <!-- 底部提示 -->
     <footer class="footer">
       <span>按 Ctrl+Shift+K 切换显示</span>
+      <span class="footer-pin-status" id="footerPinStatus"></span>
       <span id="totalCount">0 个快捷键</span>
     </footer>
   </div>
