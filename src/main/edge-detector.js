@@ -188,7 +188,11 @@ class EdgeDetector {
 
     this.mainWindow.setPosition(targetX, displayY);
     this.mainWindow.setSize(windowWidth, windowHeight);
-    this.mainWindow.setOpacity(0.9);
+    // Guard: 只有 opacity 需要变化时才设置，避免重复触发动画导致列表闪烁
+    const currentOpacity = this.mainWindow.getOpacity();
+    if (currentOpacity < 1) {
+      this.mainWindow.setOpacity(1);
+    }
     this.mainWindow.show();
 
     this.isWindowVisible = true;
@@ -296,6 +300,12 @@ class EdgeDetector {
       this._hideWindow();
       this.hideTimerId = null;
     }, this.hideDelay);
+
+    // Guard: 只有 opacity 不是 0.9 时才设置，避免重复触发动画导致列表闪烁
+    if (this.mainWindow && !this.mainWindow.isDestroyed() && this.mainWindow.getOpacity() !== 0.9) {
+      this.mainWindow.setOpacity(0.9);
+    }
+
     console.log(`[EdgeDetector] 启动隐藏计时器 (${this.hideDelay}ms)`);
   }
 
