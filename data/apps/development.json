@@ -448,60 +448,69 @@
       ],
       "shortcuts": [
         {
-          "items": [
-            [
-              "Ctrl+Shift+N",
-              "按文件名搜索"
-            ],
-            [
-              "Ctrl+N",
-              "搜索类"
-            ],
-            [
-              "Ctrl+Shift+F",
-              "全局搜索"
-            ],
-            [
-              "Ctrl+F",
-              "当前文件搜索"
-            ],
-            [
-              "Alt+F7",
-              "查找引用"
-            ],
-            [
-              "Ctrl+Alt+L",
-              "格式化代码"
-            ],
-            [
-              "Ctrl+E",
-              "最近文件"
-            ],
-            [
-              "Shift+Shift",
-              "搜索所有"
-            ],
-            [
-              "F2",
-              "下一个错误"
-            ],
-            [
-              "Ctrl+R",
-              "替换"
-            ],
-            [
-              "Ctrl+G",
-              "跳转到行"
-            ],
-            [
-              "Ctrl+[/",
-              "折叠代码块"
-            ],
-            [
-              "Ctrl+]/",
-              "展开代码块"
-            ]
-          ]
+          "key": "Ctrl+Shift+N",
+          "action": "按文件名搜索",
+          "category": "文件"
+        },
+        {
+          "key": "Ctrl+N",
+          "action": "搜索类",
+          "category": "文件"
+        },
+        {
+          "key": "Ctrl+Shift+F",
+          "action": "全局搜索",
+          "category": "文件"
+        },
+        {
+          "key": "Ctrl+F",
+          "action": "当前文件搜索",
+          "category": "编辑"
+        },
+        {
+          "key": "Alt+F7",
+          "action": "查找引用",
+          "category": "调试"
+        },
+        {
+          "key": "Ctrl+Alt+L",
+          "action": "格式化代码",
+          "category": "编辑"
+        },
+        {
+          "key": "Ctrl+E",
+          "action": "最近文件",
+          "category": "编辑"
+        },
+        {
+          "key": "Shift+Shift",
+          "action": "搜索所有",
+          "category": "其他"
+        },
+        {
+          "key": "F2",
+          "action": "下一个错误",
+          "category": "编辑"
+        },
+        {
+          "key": "Ctrl+R",
+          "action": "替换",
+          "category": "编辑"
+        },
+        {
+          "key": "Ctrl+G",
+          "action": "跳转到行",
+          "category": "编辑"
+        },
+        {
+          "key": "Ctrl+[/",
+          "action": "折叠代码块",
+          "category": "编辑"
+        },
+        {
+          "key": "Ctrl+]/",
+          "action": "展开代码块",
+          "category": "编辑"
         }
       ]
     },
@@ -516,44 +525,49 @@
       ],
       "shortcuts": [
         {
-          "items": [
-            [
-              "Ctrl+T",
-              "新建标签"
-            ],
-            [
-              "Ctrl+W",
-              "关闭标签"
-            ],
-            [
-              "Ctrl+Tab",
-              "下一个标签"
-            ],
-            [
-              "Ctrl+Shift+Tab",
-              "上一个标签"
-            ],
-            [
-              "Ctrl+L",
-              "地址栏"
-            ],
-            [
-              "Ctrl+D",
-              "收藏"
-            ],
-            [
-              "Ctrl+Shift+B",
-              "显示收藏栏"
-            ],
-            [
-              "Ctrl+Shift+K",
-              "复制标签"
-            ],
-            [
-              "Ctrl+M",
-              "静音"
-            ]
-          ]
+          "key": "Ctrl+T",
+          "action": "新建标签",
+          "category": "搜索"
+        },
+        {
+          "key": "Ctrl+W",
+          "action": "关闭标签",
+          "category": "标签页"
+        },
+        {
+          "key": "Ctrl+Tab",
+          "action": "下一个标签",
+          "category": "搜索"
+        },
+        {
+          "key": "Ctrl+Shift+Tab",
+          "action": "上一个标签",
+          "category": "文件"
+        },
+        {
+          "key": "Ctrl+L",
+          "action": "地址栏",
+          "category": "编辑"
+        },
+        {
+          "key": "Ctrl+D",
+          "action": "收藏",
+          "category": "编辑"
+        },
+        {
+          "key": "Ctrl+Shift+B",
+          "action": "显示收藏栏",
+          "category": "文件"
+        },
+        {
+          "key": "Ctrl+Shift+K",
+          "action": "复制标签",
+          "category": "文件"
+        },
+        {
+          "key": "Ctrl+M",
+          "action": "静音",
+          "category": "标签页"
         }
       ]
     }

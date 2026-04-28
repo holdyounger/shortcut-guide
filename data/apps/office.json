@@ -299,56 +299,64 @@
       ],
       "shortcuts": [
         {
-          "items": [
-            [
-              "F2",
-              "编辑单元格"
-            ],
-            [
-              "Ctrl+Enter",
-              "填充选中"
-            ],
-            [
-              "Ctrl+;",
-              "输入日期"
-            ],
-            [
-              "Ctrl+Shift+;",
-              "输入时间"
-            ],
-            [
-              "Ctrl+Shift+L",
-              "切换筛选"
-            ],
-            [
-              "Ctrl+T",
-              "创建表"
-            ],
-            [
-              "Ctrl+Alt+V",
-              "选择性粘贴"
-            ],
-            [
-              "Alt+=",
-              "求和公式"
-            ],
-            [
-              "Ctrl+Shift+1",
-              "格式化为数字"
-            ],
-            [
-              "Ctrl+Shift+4",
-              "格式化为货币"
-            ],
-            [
-              "Ctrl+D",
-              "向下填充"
-            ],
-            [
-              "Ctrl+R",
-              "向右填充"
-            ]
-          ]
+          "key": "F2",
+          "action": "编辑单元格",
+          "category": "编辑"
+        },
+        {
+          "key": "Ctrl+Enter",
+          "action": "填充选中",
+          "category": "编辑"
+        },
+        {
+          "key": "Ctrl+;",
+          "action": "输入日期",
+          "category": "搜索"
+        },
+        {
+          "key": "Ctrl+Shift+;",
+          "action": "输入时间",
+          "category": "文件"
+        },
+        {
+          "key": "Ctrl+Shift+L",
+          "action": "切换筛选",
+          "category": "文件"
+        },
+        {
+          "key": "Ctrl+T",
+          "action": "创建表",
+          "category": "搜索"
+        },
+        {
+          "key": "Ctrl+Alt+V",
+          "action": "选择性粘贴",
+          "category": "编辑"
+        },
+        {
+          "key": "Alt+=",
+          "action": "求和公式",
+          "category": "其他"
+        },
+        {
+          "key": "Ctrl+Shift+1",
+          "action": "格式化为数字",
+          "category": "文件"
+        },
+        {
+          "key": "Ctrl+Shift+4",
+          "action": "格式化为货币",
+          "category": "文件"
+        },
+        {
+          "key": "Ctrl+D",
+          "action": "向下填充",
+          "category": "编辑"
+        },
+        {
+          "key": "Ctrl+R",
+          "action": "向右填充",
+          "category": "编辑"
         }
       ]
     },
@@ -363,36 +371,39 @@
       ],
       "shortcuts": [
         {
-          "items": [
-            [
-              "F5",
-              "从头开始放映"
-            ],
-            [
-              "Shift+F5",
-              "从当前页放映"
-            ],
-            [
-              "Ctrl+M",
-              "新建幻灯片"
-            ],
-            [
-              "B",
-              "黑屏/取消黑屏"
-            ],
-            [
-              "W",
-              "白屏/取消白屏"
-            ],
-            [
-              "E",
-              "擦除笔"
-            ],
-            [
-              "Ctrl+P",
-              "激光笔/笔"
-            ]
-          ]
+          "key": "F5",
+          "action": "从头开始放映",
+          "category": "调试"
+        },
+        {
+          "key": "Shift+F5",
+          "action": "从当前页放映",
+          "category": "调试"
+        },
+        {
+          "key": "Ctrl+M",
+          "action": "新建幻灯片",
+          "category": "标签页"
+        },
+        {
+          "key": "B",
+          "action": "黑屏/取消黑屏",
+          "category": "演示"
+        },
+        {
+          "key": "W",
+          "action": "白屏/取消白屏",
+          "category": "演示"
+        },
+        {
+          "key": "E",
+          "action": "擦除笔",
+          "category": "演示"
+        },
+        {
+          "key": "Ctrl+P",
+          "action": "激光笔/笔",
+          "category": "文件"
         }
       ]
     }

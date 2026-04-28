@@ -11,64 +11,74 @@
       ],
       "shortcuts": [
         {
-          "items": [
-            [
-              "Ctrl+T",
-              "自由变换"
-            ],
-            [
-              "Ctrl+J",
-              "复制图层"
-            ],
-            [
-              "Ctrl+G",
-              "图层编组"
-            ],
-            [
-              "Ctrl+E",
-              "合并图层"
-            ],
-            [
-              "Ctrl+Shift+U",
-              "去色"
-            ],
-            [
-              "Ctrl+L",
-              "色阶"
-            ],
-            [
-              "Ctrl+M",
-              "曲线"
-            ],
-            [
-              "Ctrl+U",
-              "色相/饱和度"
-            ],
-            [
-              "Ctrl+B",
-              "色彩平衡"
-            ],
-            [
-              "V",
-              "移动工具"
-            ],
-            [
-              "C",
-              "裁剪工具"
-            ],
-            [
-              "M",
-              "选框工具"
-            ],
-            [
-              "L",
-              "套索工具"
-            ],
-            [
-              "W",
-              "魔棒工具"
-            ]
-          ]
+          "key": "Ctrl+T",
+          "action": "自由变换",
+          "category": "搜索"
+        },
+        {
+          "key": "Ctrl+J",
+          "action": "复制图层",
+          "category": "编辑"
+        },
+        {
+          "key": "Ctrl+G",
+          "action": "图层编组",
+          "category": "编辑"
+        },
+        {
+          "key": "Ctrl+E",
+          "action": "合并图层",
+          "category": "编辑"
+        },
+        {
+          "key": "Ctrl+Shift+U",
+          "action": "去色",
+          "category": "文件"
+        },
+        {
+          "key": "Ctrl+L",
+          "action": "色阶",
+          "category": "编辑"
+        },
+        {
+          "key": "Ctrl+M",
+          "action": "曲线",
+          "category": "标签页"
+        },
+        {
+          "key": "Ctrl+U",
+          "action": "色相/饱和度",
+          "category": "编辑"
+        },
+        {
+          "key": "Ctrl+B",
+          "action": "色彩平衡",
+          "category": "编辑"
+        },
+        {
+          "key": "V",
+          "action": "移动工具",
+          "category": "工具"
+        },
+        {
+          "key": "C",
+          "action": "裁剪工具",
+          "category": "工具"
+        },
+        {
+          "key": "M",
+          "action": "选框工具",
+          "category": "工具"
+        },
+        {
+          "key": "L",
+          "action": "套索工具",
+          "category": "工具"
+        },
+        {
+          "key": "W",
+          "action": "魔棒工具",
+          "category": "演示"
         }
       ]
     }

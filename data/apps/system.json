@@ -115,44 +115,49 @@
       ],
       "shortcuts": [
         {
-          "items": [
-            [
-              "Ctrl+D",
-              "复制当前行"
-            ],
-            [
-              "Ctrl+Shift+Up",
-              "上移行"
-            ],
-            [
-              "Ctrl+Shift+Down",
-              "下移行"
-            ],
-            [
-              "Ctrl+H",
-              "查找替换"
-            ],
-            [
-              "Ctrl+Shift+F",
-              "在文件中查找"
-            ],
-            [
-              "Alt+Shift+Arrow",
-              "列选择"
-            ],
-            [
-              "Ctrl+Alt+F",
-              "折叠代码"
-            ],
-            [
-              "Alt+0",
-              "折叠全部"
-            ],
-            [
-              "Alt+Shift+0",
-              "展开全部"
-            ]
-          ]
+          "key": "Ctrl+D",
+          "action": "复制当前行",
+          "category": "编辑"
+        },
+        {
+          "key": "Ctrl+Shift+Up",
+          "action": "上移行",
+          "category": "文件"
+        },
+        {
+          "key": "Ctrl+Shift+Down",
+          "action": "下移行",
+          "category": "文件"
+        },
+        {
+          "key": "Ctrl+H",
+          "action": "查找替换",
+          "category": "编辑"
+        },
+        {
+          "key": "Ctrl+Shift+F",
+          "action": "在文件中查找",
+          "category": "文件"
+        },
+        {
+          "key": "Alt+Shift+Arrow",
+          "action": "列选择",
+          "category": "编辑"
+        },
+        {
+          "key": "Ctrl+Alt+F",
+          "action": "折叠代码",
+          "category": "编辑"
+        },
+        {
+          "key": "Alt+0",
+          "action": "折叠全部",
+          "category": "其他"
+        },
+        {
+          "key": "Alt+Shift+0",
+          "action": "展开全部",
+          "category": "编辑"
         }
       ]
     }

@@ -76,28 +76,29 @@
       ],
       "shortcuts": [
         {
-          "items": [
-            [
-              "Ctrl+Alt+Z",
-              "打开QQ"
-            ],
-            [
-              "Ctrl+Alt+L",
-              "锁定QQ"
-            ],
-            [
-              "Alt+W",
-              "切换聊天窗口"
-            ],
-            [
-              "F2",
-              "引用消息"
-            ],
-            [
-              "Ctrl+Enter",
-              "发送消息"
-            ]
-          ]
+          "key": "Ctrl+Alt+Z",
+          "action": "打开QQ",
+          "category": "编辑"
+        },
+        {
+          "key": "Ctrl+Alt+L",
+          "action": "锁定QQ",
+          "category": "编辑"
+        },
+        {
+          "key": "Alt+W",
+          "action": "切换聊天窗口",
+          "category": "标签页"
+        },
+        {
+          "key": "F2",
+          "action": "引用消息",
+          "category": "编辑"
+        },
+        {
+          "key": "Ctrl+Enter",
+          "action": "发送消息",
+          "category": "编辑"
         }
       ]
     },
@@ -113,44 +114,49 @@
       ],
       "shortcuts": [
         {
-          "items": [
-            [
-              "Ctrl+D",
-              "新建对话"
-            ],
-            [
-              "Ctrl+/",
-              "搜索"
-            ],
-            [
-              "Alt+A",
-              "截屏"
-            ],
-            [
-              "Enter",
-              "发送消息"
-            ],
-            [
-              "Ctrl+Shift+K",
-              "开新会话"
-            ],
-            [
-              "Ctrl+Shift+C",
-              "切换对话"
-            ],
-            [
-              "Ctrl+J",
-              "收藏消息"
-            ],
-            [
-              "Alt+S",
-              "截图标注"
-            ],
-            [
-              "Ctrl+T",
-              "新建T聊"
-            ]
-          ]
+          "key": "Ctrl+D",
+          "action": "新建对话",
+          "category": "编辑"
+        },
+        {
+          "key": "Ctrl+/",
+          "action": "搜索",
+          "category": "搜索"
+        },
+        {
+          "key": "Alt+A",
+          "action": "截屏",
+          "category": "截图"
+        },
+        {
+          "key": "Enter",
+          "action": "发送消息",
+          "category": "演示"
+        },
+        {
+          "key": "Ctrl+Shift+K",
+          "action": "开新会话",
+          "category": "文件"
+        },
+        {
+          "key": "Ctrl+Shift+C",
+          "action": "切换对话",
+          "category": "文件"
+        },
+        {
+          "key": "Ctrl+J",
+          "action": "收藏消息",
+          "category": "编辑"
+        },
+        {
+          "key": "Alt+S",
+          "action": "截图标注",
+          "category": "截图"
+        },
+        {
+          "key": "Ctrl+T",
+          "action": "新建T聊",
+          "category": "搜索"
         }
       ]
     },
@@ -166,36 +172,39 @@
       ],
       "shortcuts": [
         {
-          "items": [
-            [
-              "Ctrl+Alt+I",
-              "打开工作台"
-            ],
-            [
-              "Ctrl+/",
-              "全局搜索"
-            ],
-            [
-              "Ctrl+Shift+M",
-              "发起会议"
-            ],
-            [
-              "Enter",
-              "发送消息"
-            ],
-            [
-              "Shift+Enter",
-              "换行"
-            ],
-            [
-              "Ctrl+Shift+K",
-              "快捷短语"
-            ],
-            [
-              "Ctrl+K",
-              "搜索"
-            ]
-          ]
+          "key": "Ctrl+Alt+I",
+          "action": "打开工作台",
+          "category": "编辑"
+        },
+        {
+          "key": "Ctrl+/",
+          "action": "全局搜索",
+          "category": "搜索"
+        },
+        {
+          "key": "Ctrl+Shift+M",
+          "action": "发起会议",
+          "category": "文件"
+        },
+        {
+          "key": "Enter",
+          "action": "发送消息",
+          "category": "演示"
+        },
+        {
+          "key": "Shift+Enter",
+          "action": "换行",
+          "category": "其他"
+        },
+        {
+          "key": "Ctrl+Shift+K",
+          "action": "快捷短语",
+          "category": "文件"
+        },
+        {
+          "key": "Ctrl+K",
+          "action": "搜索",
+          "category": "搜索"
         }
       ]
     }
