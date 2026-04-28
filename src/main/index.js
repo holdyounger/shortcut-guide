@@ -154,6 +154,11 @@ class KeySenseApp {
       return this.edgeDetector.isPinned;
     });
 
+    // 欢迎页已关闭，允许启动隐藏倒计时
+    ipcMain.on('welcome-dismissed', () => {
+      this.edgeDetector.setWelcomeDismissed();
+    });
+
     // 渲染进程获取隐藏倒计时剩余时间
     ipcMain.handle('get-countdown', () => {
       return this.edgeDetector.getCountdown();

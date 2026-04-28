@@ -119,6 +119,8 @@ function closeWelcome() {
   } catch (err) {
     console.warn('[Renderer] localStorage 写入失败:', err);
   }
+  // 通知主进程允许启动隐藏倒计时
+  window.keySenseAPI.welcomeDismissed();
   if (elements.welcomeOverlay) {
     elements.welcomeOverlay.classList.remove('visible');
     console.log('[Renderer] 关闭欢迎页');

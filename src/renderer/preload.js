@@ -122,6 +122,13 @@ contextBridge.exposeInMainWorld('keySenseAPI', {
    * @returns {Promise<{isCountingDown: boolean, remainingMs: number|null}>}
    */
   getCountdown: () => ipcRenderer.invoke('get-countdown'),
+
+  /**
+   * 通知主进程欢迎页已关闭，允许启动隐藏倒计时
+   */
+  welcomeDismissed: () => {
+    ipcRenderer.send('welcome-dismissed');
+  },
 });
 
 console.log('[Preload] API 已暴露');

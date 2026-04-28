@@ -34,6 +34,8 @@ class EdgeDetector {
     this._hideDeadline = null;
     /** 是否正在倒计时中（计时器运行且未固定）*/
     this.isCountingDown = false;
+    /** 欢迎页是否已关闭（关闭前不启动隐藏倒计时）*/
+    this._welcomeDismissed = false;
   }
 
   /**
@@ -212,6 +214,7 @@ class EdgeDetector {
     if (this.isPinned) return;
     if (this.hideTimerId) return;
     if (this._lastIsOverPanel) return;
+    if (!this._welcomeDismissed) return; // 欢迎页未关闭，不启动倒计时
 
     const deadline = Date.now() + this.hideDelay;
     this._hideDeadline = deadline;
@@ -324,6 +327,14 @@ class EdgeDetector {
     } else {
       this.forceShow();
     }
+  }
+
+  /**
+   * 标记欢迎页已关闭（允许启动隐藏倒计时）
+   */
+  setWelcomeDismissed() {
+    this._welcomeDismissed = true;
+    console.log('[EdgeDetector] 欢迎页已关闭，启动隐藏倒计时');
   }
 
   setMainWindow(mainWindow) {
