@@ -16,15 +16,18 @@
         <h1 class="app-name" id="appName">检测中...</h1>
         <span class="app-process" id="appProcess"></span>
       </div>
-      <!-- 固定按钮：两套图标，清晰区分两种状态 -->
+      <!-- 倒计时提示（倒计时运行时显示在标题栏右侧） -->
+      <div class="countdown-badge" id="countdownBadge">
+        <span class="countdown-icon">⏱</span>
+        <span class="countdown-number" id="countdownNumber">5</span>
+        <span class="countdown-unit">s</span>
+      </div>
+      <!-- 固定按钮 -->
       <button class="pin-button" id="pinButton" title="固定窗口（保持显示）">
-        <!-- 未固定图标：空心圆环（代表自由/未锁定） -->
         <svg class="pin-icon pin-icon--unpinned" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <circle cx="12" cy="12" r="7" fill="none" stroke="currentColor" stroke-width="2.2"/>
-          <!-- 中心小圆点 -->
           <circle cx="12" cy="12" r="2" fill="currentColor" opacity="0.4"/>
         </svg>
-        <!-- 已固定图标：实心圆 + 内嵌小圆 + 外发光（代表锁定/固定） -->
         <svg class="pin-icon pin-icon--pinned" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <circle cx="12" cy="12" r="9" fill="#6c5ce7" opacity="0.25"/>
           <circle cx="12" cy="12" r="7" fill="#6c5ce7"/>
@@ -49,6 +52,36 @@
       <span class="footer-pin-status" id="footerPinStatus"></span>
       <span id="totalCount">0 个快捷键</span>
     </footer>
+
+    <!-- 首次启动欢迎页 -->
+    <div class="welcome-overlay" id="welcomeOverlay">
+      <div class="welcome-card">
+        <div class="welcome-icon">⌨️</div>
+        <h2 class="welcome-title">欢迎使用 KeySense</h2>
+        <p class="welcome-subtitle">你的快捷键感知器</p>
+
+        <div class="welcome-steps">
+          <div class="welcome-step">
+            <div class="welcome-step-num">1</div>
+            <div class="welcome-step-text">将鼠标靠近<strong>屏幕右边缘</strong>，窗口自动弹出</div>
+          </div>
+          <div class="welcome-step">
+            <div class="welcome-step-num">2</div>
+            <div class="welcome-step-text">移动鼠标到窗口内查看当前应用的快捷键</div>
+          </div>
+          <div class="welcome-step">
+            <div class="welcome-step-num">3</div>
+            <div class="welcome-step-text">按 <kbd>Ctrl+Shift+K</kbd> 随时切换显示/隐藏</div>
+          </div>
+          <div class="welcome-step">
+            <div class="welcome-step-num">4</div>
+            <div class="welcome-step-text">点击 <strong>固定按钮</strong> 可锁定窗口，防止自动隐藏</div>
+          </div>
+        </div>
+
+        <button class="welcome-btn" id="welcomeBtn">开始使用 →</button>
+      </div>
+    </div>
   </div>
 
   <script src="main.js"></script>

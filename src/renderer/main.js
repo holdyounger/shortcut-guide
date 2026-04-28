@@ -1,11 +1,14 @@
 /**
  * main.js - 渲染进程主脚本
- * 
+ *
  * 功能：
  * - 接收主进程消息，动态渲染快捷键列表
  * - 支持搜索过滤
- * - 根据当前应用名加载数据
+ * - 首次启动欢迎页
+ * - 隐藏倒计时显示
  */
+
+const WELCOME_KEY = 'keysense_welcomed';
 
 // ========== 状态管理 ==========
 const state = {
@@ -19,6 +22,8 @@ const state = {
   dragStartY: 0,
   windowStartX: 0,
   windowStartY: 0,
+  isCountingDown: false,
+  countdownInterval: null,
 };
 
 // ========== DOM 元素 ==========
@@ -30,6 +35,10 @@ const elements = {
   totalCount: document.getElementById('totalCount'),
   pinButton: document.getElementById('pinButton'),
   footerPinStatus: document.getElementById('footerPinStatus'),
+  welcomeOverlay: document.getElementById('welcomeOverlay'),
+  welcomeBtn: document.getElementById('welcomeBtn'),
+  countdownBadge: document.getElementById('countdownBadge'),
+  countdownNumber: document.getElementById('countdownNumber'),
 };
 
 // ========== 初始化 ==========
@@ -48,7 +57,7 @@ async function init() {
   // 设置拖拽事件
   setupDragEvents();
 
-  // Bug 4 修复：鼠标进入窗口即触发显示，离开启动隐藏计时器
+  // 鼠标进入/离开窗口事件
   const appEl = document.getElementById('app');
   if (appEl) {
     appEl.addEventListener('mouseenter', () => {
@@ -60,33 +69,114 @@ async function init() {
     console.log('[Renderer] 鼠标进入/离开监听已注册');
   }
 
+  // 监听倒计时更新
+  window.keySenseAPI.onCountdownUpdate(handleCountdownUpdate);
+
+  // 欢迎页按钮
+  if (elements.welcomeBtn) {
+    elements.welcomeBtn.addEventListener('click', closeWelcome);
+  }
+
+  // 检查是否首次启动
+  checkWelcome();
+
   // 初始加载
   await loadCurrentApp();
 
   console.log('[Renderer] 初始化完成');
 }
 
+// ========== 首次启动欢迎页 ==========
+function checkWelcome() {
+  try {
+    const welcomed = localStorage.getItem(WELCOME_KEY);
+    if (!welcomed) {
+      // 首次启动：显示欢迎页
+      if (elements.welcomeOverlay) {
+        elements.welcomeOverlay.classList.add('visible');
+        console.log('[Renderer] 首次启动，显示欢迎页');
+      }
+    } else {
+      console.log('[Renderer] 非首次启动，跳过欢迎页');
+    }
+  } catch (err) {
+    console.warn('[Renderer] localStorage 不可用:', err);
+  }
+}
+
+function closeWelcome() {
+  try {
+    localStorage.setItem(WELCOME_KEY, '1');
+  } catch (err) {
+    console.warn('[Renderer] localStorage 写入失败:', err);
+  }
+  if (elements.welcomeOverlay) {
+    elements.welcomeOverlay.classList.remove('visible');
+    console.log('[Renderer] 关闭欢迎页');
+  }
+}
+
+// ========== 倒计时显示 ==========
 /**
- * 处理主进程发来的应用变化事件
- * 直接使用 IPC 传来的 appData，避免额外的 IPC 往返
- * @param {Object} data - { processName, appData }
+ * 处理倒计时状态更新（由主进程 edge-detector 推送）
+ * @param {{isCountingDown: boolean, remainingMs: number|null}} data
  */
+function handleCountdownUpdate(data) {
+  state.isCountingDown = data.isCountingDown;
+  const remaining = data.remainingMs;
+
+  if (state.isCountingDown && remaining !== null && remaining > 0) {
+    // 启动倒计时显示
+    if (!elements.countdownBadge.classList.contains('visible')) {
+      elements.countdownBadge.classList.add('visible');
+    }
+    updateCountdownDisplay(remaining);
+
+    // 启动轮询更新（每秒刷新一次显示）
+    if (!state.countdownInterval) {
+      state.countdownInterval = setInterval(async () => {
+        const info = await window.keySenseAPI.getCountdown();
+        if (!info.isCountingDown || info.remainingMs === null) {
+          hideCountdown();
+          clearInterval(state.countdownInterval);
+          state.countdownInterval = null;
+          return;
+        }
+        updateCountdownDisplay(info.remainingMs);
+      }, 200);
+    }
+  } else {
+    hideCountdown();
+    if (state.countdownInterval) {
+      clearInterval(state.countdownInterval);
+      state.countdownInterval = null;
+    }
+  }
+}
+
+function updateCountdownDisplay(remainingMs) {
+  const seconds = Math.max(0, Math.ceil(remainingMs / 1000));
+  elements.countdownNumber.textContent = seconds;
+}
+
+function hideCountdown() {
+  elements.countdownBadge.classList.remove('visible');
+}
+
+// ========== 处理主进程发来的应用变化事件 ==========
 function handleAppChanged(data) {
   const { appData } = data;
   updateCurrentApp(appData);
 }
 
-/**
- * 设置窗口拖拽事件（仅标题栏可拖拽）
- */
+// ========== 设置窗口拖拽事件 ==========
 function setupDragEvents() {
-  // 仅标题栏可拖拽，避免干扰 body 中的交互元素
   const header = document.querySelector('.header');
   if (header) {
     header.style.cursor = 'move';
     header.addEventListener('mousedown', async (e) => {
-      // 跳过 Pin 按钮上的点击
       if (e.target.closest('.pin-button')) return;
+      if (e.target.closest('.countdown-badge')) return;
 
       state.isDragging = true;
       state.dragStartX = e.screenX;
@@ -123,9 +213,7 @@ function setupDragEvents() {
   }
 }
 
-/**
- * 加载当前活动应用数据
- */
+// ========== 加载当前活动应用数据 ==========
 async function loadCurrentApp() {
   try {
     const appData = await window.keySenseAPI.getCurrentApp();
@@ -138,7 +226,7 @@ async function loadCurrentApp() {
 
 /**
  * 更新当前应用信息
- * @param {Object|null} appData - 应用数据
+ * @param {Object|null} appData
  */
 function updateCurrentApp(appData) {
   state.currentApp = appData;
@@ -154,7 +242,7 @@ function updateCurrentApp(appData) {
 
 /**
  * 加载指定应用的快捷键
- * @param {string} appId - 应用ID
+ * @param {string} appId
  */
 async function loadShortcuts(appId) {
   try {
@@ -172,14 +260,6 @@ async function loadShortcuts(appId) {
  */
 function filterAndRenderShortcuts() {
   const query = state.searchQuery.toLowerCase().trim();
-  const categories = Object.keys(state.shortcutsByCategory);
-
-  if (categories.length === 0) {
-    showEmptyState('该应用无快捷键');
-    return;
-  }
-
-  // 过滤快捷键
   const filtered = {};
   let totalCount = 0;
 
@@ -197,8 +277,6 @@ function filterAndRenderShortcuts() {
 
   state.filteredShortcuts = filtered;
   renderShortcuts();
-
-  // 更新总数
   elements.totalCount.textContent = `${totalCount} 个快捷键`;
 }
 
@@ -278,6 +356,11 @@ function updatePinUI() {
     pinButton.title = '取消固定（恢复自动隐藏）';
     footerPinStatus.textContent = '已固定 · 面板保持显示';
     footerPinStatus.classList.add('visible');
+    hideCountdown();
+    if (state.countdownInterval) {
+      clearInterval(state.countdownInterval);
+      state.countdownInterval = null;
+    }
   } else {
     pinButton.classList.remove('pinned');
     pinButton.title = '固定窗口（保持显示）';

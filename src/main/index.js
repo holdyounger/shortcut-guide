@@ -119,9 +119,6 @@ class KeySenseApp {
   /**
    * 设置 IPC 通信
    */
-  /**
-   * 设置 IPC 通信
-   */
   setupIPC() {
     // 渲染进程请求当前应用数据（触发立即检测，不等待轮询）
     ipcMain.handle('get-current-app', async () => {
@@ -153,6 +150,11 @@ class KeySenseApp {
     // 验证固定状态（调试用）
     ipcMain.handle('verify-pinned', () => {
       return this.edgeDetector.isPinned;
+    });
+
+    // 渲染进程获取隐藏倒计时剩余时间
+    ipcMain.handle('get-countdown', () => {
+      return this.edgeDetector.getCountdown();
     });
 
     // 渲染进程获取窗口位置（用于拖拽）

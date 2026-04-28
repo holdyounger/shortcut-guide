@@ -1,6 +1,6 @@
 /**
  * main.css - KeySense 样式文件
- * 
+ *
  * 深色主题，卡片式布局
  */
 
@@ -20,8 +20,10 @@
   --text-muted: #606068;
   --accent-color: #6c5ce7;
   --accent-hover: #a29bfe;
+  --accent-soft: rgba(108, 92, 231, 0.2);
   --border-color: rgba(80, 80, 90, 0.5);
   --shadow-color: rgba(0, 0, 0, 0.3);
+  --danger-color: #ff6b6b;
 }
 
 html, body {
@@ -53,13 +55,14 @@ html, body {
   cursor: move;
 }
 
-/* 交互元素排除拖拽（必须单独标注） */
+/* 交互元素排除拖拽 */
 .header .pin-button,
-.header .search-box input {
+.header .search-box input,
+.header .countdown-badge {
   -webkit-app-region: no-drag;
 }
 
-/* ========== 标题栏（可拖拽 + 手型光标） ========== */
+/* ========== 标题栏 ========== */
 .header {
   display: flex;
   align-items: center;
@@ -67,8 +70,9 @@ html, body {
   padding: 16px;
   background: linear-gradient(135deg, var(--accent-color), #4834d4);
   border-bottom: 1px solid var(--border-color);
-  cursor: move; /* 拖拽手型 */
+  cursor: move;
   user-select: none;
+  position: relative;
 }
 
 .app-icon {
@@ -95,6 +99,47 @@ html, body {
   color: rgba(255, 255, 255, 0.7);
   display: block;
   margin-top: 2px;
+}
+
+/* ========== 倒计时徽章 ========== */
+.countdown-badge {
+  display: none; /* 默认隐藏，有倒计时时显示 */
+  align-items: center;
+  gap: 3px;
+  padding: 4px 10px;
+  background: rgba(255, 107, 107, 0.2);
+  border: 1px solid rgba(255, 107, 107, 0.4);
+  border-radius: 20px;
+  font-size: 12px;
+  color: #ff9999;
+  animation: countdownPulse 1s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+.countdown-badge.visible {
+  display: flex;
+}
+
+.countdown-icon {
+  font-size: 11px;
+}
+
+.countdown-number {
+  font-weight: 700;
+  font-size: 13px;
+  min-width: 14px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.countdown-unit {
+  font-size: 11px;
+  opacity: 0.8;
+}
+
+@keyframes countdownPulse {
+  0%, 100% { opacity: 0.9; }
+  50% { opacity: 0.6; }
 }
 
 /* ========== 搜索框 ========== */
@@ -262,19 +307,6 @@ html, body {
   color: var(--text-muted);
 }
 
-/* ========== 动画 ========== */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-5px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* 注意：.category 动画已移除 — 频繁重建列表时动画会导致视觉闪烁 */
-
-/* ========== 选中高亮 ========== */
-.shortcut-item.highlighted {
-  background: rgba(108, 92, 231, 0.3);
-}
-
 /* ========== 固定按钮 ========== */
 .pin-button {
   flex-shrink: 0;
@@ -298,7 +330,6 @@ html, body {
   overflow: hidden;
 }
 
-/* 两个图标用 position:absolute 叠放 */
 .pin-icon {
   width: 16px;
   height: 16px;
@@ -307,11 +338,9 @@ html, body {
   position: absolute;
 }
 
-/* 默认：显示未固定图标 */
 .pin-icon--unpinned { display: block; }
 .pin-icon--pinned   { display: none; }
 
-/* 悬停态 */
 .pin-button:hover {
   background: rgba(255, 255, 255, 0.12);
   border-color: rgba(255, 255, 255, 0.25);
@@ -322,12 +351,10 @@ html, body {
   transform: rotate(-15deg) scale(1.1);
 }
 
-/* 按下态 */
 .pin-button:active {
   transform: scale(0.9);
 }
 
-/* 已固定状态（.pinned）—— 图标切换 + 样式变化 */
 .pin-button.pinned {
   background: rgba(108, 92, 231, 0.35);
   border-color: #6c5ce7;
@@ -336,13 +363,11 @@ html, body {
   animation: pinPulse 2.5s ease-in-out infinite;
 }
 
-/* pinned 时切换图标并放大 */
 .pin-button.pinned .pin-icon--unpinned { display: none; }
 .pin-button.pinned .pin-icon--pinned   { display: block; }
 .pin-button.pinned .pin-icon { transform: scale(1.15); }
 .pin-button.pinned:hover .pin-icon { transform: scale(1.3); }
 
-/* 脉冲动画 */
 @keyframes pinPulse {
   0%   { box-shadow: 0 0 8px rgba(108, 92, 231, 0.3); }
   50%  { box-shadow: 0 0 20px rgba(108, 92, 231, 0.65); }
@@ -363,4 +388,135 @@ html, body {
 .footer-pin-status.visible {
   opacity: 1;
   transform: translateX(0);
+}
+
+/* ========== 首次启动欢迎页 ========== */
+.welcome-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(20, 20, 25, 0.97);
+  display: none; /* JS 控制显示 */
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  border-radius: 8px;
+}
+
+.welcome-overlay.visible {
+  display: flex;
+  animation: fadeIn 0.3s ease;
+}
+
+.welcome-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 32px 28px 28px;
+  max-width: 260px;
+  width: 100%;
+  animation: slideUp 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.welcome-icon {
+  font-size: 52px;
+  margin-bottom: 12px;
+  line-height: 1;
+  filter: drop-shadow(0 0 20px rgba(108, 92, 231, 0.5));
+}
+
+.welcome-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  background: linear-gradient(135deg, #fff, #a29bfe);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.welcome-subtitle {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+
+.welcome-steps {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 28px;
+  text-align: left;
+}
+
+.welcome-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.welcome-step-num {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  background: var(--accent-color);
+  border-radius: 50%;
+  font-size: 11px;
+  font-weight: 700;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+}
+
+.welcome-step-text {
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.welcome-step-text strong {
+  color: var(--text-primary);
+}
+
+.welcome-step-text kbd {
+  display: inline-block;
+  padding: 1px 5px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 3px;
+  font-family: 'SF Mono', Monaco, 'Courier New', monospace;
+  font-size: 11px;
+  color: var(--accent-hover);
+}
+
+.welcome-btn {
+  width: 100%;
+  padding: 11px;
+  background: var(--accent-color);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  box-shadow: 0 4px 16px rgba(108, 92, 231, 0.4);
+}
+
+.welcome-btn:hover {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(108, 92, 231, 0.5);
+}
+
+.welcome-btn:active {
+  transform: translateY(0);
 }
