@@ -31,6 +31,21 @@
         { "key": "Ctrl+0", "action": "恢复默认缩放", "category": "缩放" }
       ]
     },
+    "windows-terminal": {
+      "name": "Windows Terminal",
+      "processNames": ["Windows Terminal Host", "WindowsTerminal", "WindowsTerminal.exe", "WindowsTerminalUiHost.exe"],
+      "platforms": ["windows"],
+      "shortcuts": [
+        { "key": "Ctrl+Shift+T", "action": "新建标签页", "category": "标签页" },
+        { "key": "Ctrl+Shift+W", "action": "关闭当前标签页", "category": "标签页" },
+        { "key": "Ctrl+Tab", "action": "切换到下一个标签页", "category": "标签页" },
+        { "key": "Ctrl+Shift+Tab", "action": "切换到上一个标签页", "category": "标签页" },
+        { "key": "Ctrl+,", "action": "打开设置", "category": "设置" },
+        { "key": "Ctrl+Shift+P", "action": "命令面板", "category": "命令" },
+        { "key": "Alt+F4", "action": "关闭窗口", "category": "窗口" },
+        { "key": "F11", "action": "全屏模式", "category": "窗口" }
+      ]
+    },
     "windbg": {
       "name": "WinDbg",
       "processNames": ["windbg", "windbg.exe", "dbgview", "cdb"],
@@ -144,7 +159,7 @@
     },
     "vscode": {
       "name": "Visual Studio Code",
-      "processNames": ["code", "code.exe"],
+      "processNames": ["code", "code.exe", "Visual Studio Code"],
       "platforms": ["windows", "macos", "linux"],
       "shortcuts": [
         { "key": "Ctrl+P", "action": "快速打开文件", "category": "导航" },
@@ -174,7 +189,7 @@
     },
     "explorer": {
       "name": "Windows Explorer",
-      "processNames": ["explorer", "explorer.exe"],
+      "processNames": ["explorer", "explorer.exe", "Windows 资源管理器"],
       "platforms": ["windows"],
       "shortcuts": [
         { "key": "Ctrl+N", "action": "新建窗口", "category": "窗口" },

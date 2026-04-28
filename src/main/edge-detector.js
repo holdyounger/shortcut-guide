@@ -70,11 +70,20 @@ class EdgeDetector {
       const rightEdge = displayX + width;
       const distanceFromRight = rightEdge - point.x;
 
+      // 检查鼠标是否在窗口内部
+      const windowBounds = this.mainWindow.getBounds();
+      const isOverPanel = (
+        point.x >= windowBounds.x &&
+        point.x <= windowBounds.x + windowBounds.width &&
+        point.y >= windowBounds.y &&
+        point.y <= windowBounds.y + windowBounds.height
+      );
+
       // 鼠标在右边缘区域（5px 内）
       if (distanceFromRight <= this.edgeWidth && distanceFromRight >= 0) {
         // 取消隐藏计时器
         this._cancelHideTimer();
-        
+
         // 显示窗口
         if (!this.isWindowVisible) {
           this._showWindow(display);
@@ -82,8 +91,10 @@ class EdgeDetector {
       }
       // 鼠标不在边缘区域
       else if (this.isWindowVisible) {
-        // 启动隐藏计时器
-        this._startHideTimer();
+        // 只有当鼠标不在面板上时，才启动隐藏计时器
+        if (!isOverPanel) {
+          this._startHideTimer();
+        }
       }
     } catch (err) {
       console.error(`[EdgeDetector] 检测错误: ${err.message}`);

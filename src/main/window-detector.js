@@ -77,6 +77,31 @@ class WindowDetector {
     this.currentProcess = null;
     this.intervalId = null;
     this.isActive = false;
+    this._selfProcessNames = [
+      'electron',
+      'electron.exe',
+      'shortcut-guide',
+      'shortcut-guide.exe',
+    ];
+    this._selfTitles = [
+      '快捷键提示器',
+      'KeySense',
+      'shortcut-guide',
+    ];
+  }
+
+  /**
+   * 检查给定的进程名或窗口标题是否属于 KeySense 自身窗口
+   * @param {string|null} processName
+   * @returns {boolean}
+   */
+  _isKeySenseWindow(processName) {
+    if (!processName) return false;
+    const lower = processName.toLowerCase();
+    if (this._selfProcessNames.some((name) => lower === name.toLowerCase())) {
+      return true;
+    }
+    return false;
   }
 
   /**
@@ -89,6 +114,13 @@ class WindowDetector {
     this.intervalId = setInterval(async () => {
       try {
         const processName = await getActiveProcess();
+
+        // 屏蔽 KeySense 自身窗口：保留上一个有效窗口不变
+        if (this._isKeySenseWindow(processName)) {
+          // currentProcess 保持为上一个有效值（即 null 时也保留）
+          return; // 静默忽略本次检测，不更新状态，不触发通知
+        }
+
         this.currentProcess = processName;
 
         if (processName && processName !== this.lastProcess) {
@@ -122,6 +154,19 @@ class WindowDetector {
   _notifyMain(processName) {
     const matchedApp = this.dataManager.matchApp(processName);
     console.log('[WindowDetector] 匹配到应用: ' + (matchedApp ? matchedApp.name : '未知'));
+    // 将 appData 写入共享存储，供 setupIPC 读取并通过 IPC 发送
+    this._lastMatchedApp = matchedApp;
+  }
+
+  /**
+   * 获取最近一次匹配到的应用数据（供主进程 IPC 轮询使用）
+   * @returns {{ processName: string|null, appData: Object|null }}
+   */
+  getLastMatchedInfo() {
+    return {
+      processName: this.currentProcess,
+      appData: this._lastMatchedApp || null,
+    };
   }
 
   /**

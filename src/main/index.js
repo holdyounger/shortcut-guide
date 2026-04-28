@@ -140,18 +140,18 @@ class KeySenseApp {
     });
 
     // 窗口检测器检测到窗口变化时，通知渲染进程
+    // 使用 getLastMatchedInfo 读取 windowDetector 缓存的匹配数据，避免重复匹配
     setInterval(() => {
       if (this.mainWindow && !this.mainWindow.isDestroyed()) {
-        const processName = this.windowDetector.getCurrentProcess();
+        const { processName, appData } = this.windowDetector.getLastMatchedInfo();
         if (processName) {
-          const appData = this.dataManager.matchApp(processName);
           this.mainWindow.webContents.send('app-changed', {
             processName,
             appData,
           });
         }
       }
-    }, 300); // 每 300ms 更新一次
+    }, 300); // 每 300ms 同步一次
 
     console.log('[Main] IPC 通信设置完成');
   }
