@@ -407,6 +407,24 @@ html, body {
   animation: fadeIn 0.3s ease;
 }
 
+.welcome-overlay.fade-out {
+  display: flex;
+  animation: fadeOut 0.3s ease forwards;
+}
+
+/* 内容区域过渡动画（欢迎页关闭后内容淡入） */
+#app {
+  transition: opacity 0.25s ease;
+}
+
+#app.content-visible {
+  opacity: 1;
+}
+
+#app.content-hidden {
+  opacity: 0.6;
+}
+
 .welcome-card {
   display: flex;
   flex-direction: column;
@@ -421,6 +439,11 @@ html, body {
 @keyframes slideUp {
   from { opacity: 0; transform: translateY(20px); }
   to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to   { opacity: 0; }
 }
 
 .welcome-icon {

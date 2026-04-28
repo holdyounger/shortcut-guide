@@ -124,6 +124,10 @@ function closeWelcome() {
   window.keySenseAPI.welcomeDismissed();
   if (elements.welcomeOverlay) {
     elements.welcomeOverlay.classList.remove('visible');
+    elements.welcomeOverlay.classList.add('fade-out');
+    setTimeout(() => {
+      elements.welcomeOverlay.classList.remove('fade-out');
+    }, 300); // 与 fadeOut 动画时长同步
     console.log('[Renderer] 关闭欢迎页');
   }
 }
