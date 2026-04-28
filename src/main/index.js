@@ -69,9 +69,6 @@ class KeySenseApp {
       this.mainWindow = null;
     });
 
-    // 允许拖拽时改变位置（无边框窗口需要）
-    this.mainWindow.setResizable(true);
-
     // 防止窗口失去焦点时隐藏（由边缘检测器控制）
     this.mainWindow.on('blur', () => {
       // 可选：失去焦点时的行为

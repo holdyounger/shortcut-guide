@@ -135,8 +135,11 @@ class EdgeDetector {
 
     let targetX;
     if (this._lastDraggedPos) {
-      // 恢复用户拖拽的位置
       targetX = this._lastDraggedPos.x;
+    } else if (this.isWindowVisible && this.mainWindow) {
+      // CSS 拖拽后窗口位置已被 OS 更新，直接获取当前位置
+      const bounds = this.mainWindow.getBounds();
+      targetX = bounds.x;
     } else {
       // 默认：屏幕右边缘
       targetX = displayX + width - windowWidth;

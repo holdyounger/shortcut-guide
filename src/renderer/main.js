@@ -40,9 +40,6 @@ async function init() {
     togglePin();
   });
 
-  // 拖拽支持（标题栏可拖动整个窗口）
-  setupWindowDrag();
-
   // 初始加载
   await loadCurrentApp();
 
@@ -190,52 +187,6 @@ function showEmptyState(message) {
 }
 
 // ========== 固定按钮功能 ==========
-/**
- * 拖拽窗口支持
- */
-function setupWindowDrag() {
-  const header = document.querySelector('.header');
-  if (!header) return;
-
-  let isDragging = false;
-  let startX = 0, startY = 0;
-  let windowStartX = 0, windowStartY = 0;
-
-  header.addEventListener('mousedown', (e) => {
-    // 忽略按钮上的点击
-    if (e.target.closest('.pin-button')) return;
-
-    isDragging = true;
-    startX = e.screenX;
-    startY = e.screenY;
-
-    // 通过 BrowserView 的位置获取（需要 IPC）
-    // 先用 startX/Y 作为相对基准
-    window.keySenseAPI.getWindowBounds().then(bounds => {
-      if (bounds) {
-        windowStartX = bounds.x;
-        windowStartY = bounds.y;
-      }
-    }).catch(() => {});
-
-    e.preventDefault();
-  });
-
-  document.addEventListener('mousemove', (e) => {
-    if (!isDragging) return;
-    const deltaX = e.screenX - startX;
-    const deltaY = e.screenY - startY;
-    const newX = windowStartX + deltaX;
-    const newY = windowStartY + deltaY;
-    window.keySenseAPI.updateDraggedPosition(Math.round(newX), Math.round(newY));
-  });
-
-  document.addEventListener('mouseup', () => {
-    if (isDragging) {
-      isDragging = false;
-    }
-  });
-}
 function togglePin() {
   state.isPinned = !state.isPinned;
   updatePinUI();

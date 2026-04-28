@@ -47,7 +47,19 @@ html, body {
   box-shadow: 0 4px 20px var(--shadow-color);
 }
 
-/* ========== 标题栏（可拖拽） ========== */
+/* ========== 可拖拽区域（整个 body） ========== */
+body.draggable-region {
+  -webkit-app-region: drag;
+}
+
+/* 交互元素排除拖拽（必须单独标注） */
+body.draggable-region .pin-button,
+body.draggable-region .search-box input,
+body.draggable-region .shortcuts-container {
+  -webkit-app-region: no-drag;
+}
+
+/* ========== 标题栏（可拖拽 + 手型光标） ========== */
 .header {
   display: flex;
   align-items: center;
