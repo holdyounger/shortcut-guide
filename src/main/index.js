@@ -119,12 +119,16 @@ class KeySenseApp {
   /**
    * 设置 IPC 通信
    */
+  /**
+   * 设置 IPC 通信
+   */
   setupIPC() {
-    // 渲染进程请求当前应用数据
+    // 渲染进程请求当前应用数据（触发立即检测，不等待轮询）
     ipcMain.handle('get-current-app', async () => {
+      // 立即触发一次检测（不等待 200ms 轮询），确保首次返回有效数据
+      await this.windowDetector.detect();
       const processName = this.windowDetector.getCurrentProcess();
       if (!processName) return null;
-
       const appData = this.dataManager.matchApp(processName);
       return appData;
     });
@@ -166,6 +170,15 @@ class KeySenseApp {
       }
       this.edgeDetector.updateDraggedPosition(Math.round(x), Math.round(y));
       return true;
+    });
+
+    // 鼠标进入/离开窗口事件（用于 Bug 4：进入窗口即触发显示）
+    ipcMain.on('mouse-enter', () => {
+      this.edgeDetector.onMouseEnter();
+    });
+
+    ipcMain.on('mouse-leave', () => {
+      this.edgeDetector.onMouseLeave();
     });
 
     // 窗口检测器检测到窗口变化时，通知渲染进程

@@ -48,6 +48,18 @@ async function init() {
   // 设置拖拽事件
   setupDragEvents();
 
+  // Bug 4 修复：鼠标进入窗口即触发显示，离开启动隐藏计时器
+  const appEl = document.getElementById('app');
+  if (appEl) {
+    appEl.addEventListener('mouseenter', () => {
+      window.keySenseAPI.mouseEnter();
+    });
+    appEl.addEventListener('mouseleave', () => {
+      window.keySenseAPI.mouseLeave();
+    });
+    console.log('[Renderer] 鼠标进入/离开监听已注册');
+  }
+
   // 初始加载
   await loadCurrentApp();
 
@@ -55,53 +67,60 @@ async function init() {
 }
 
 /**
- * 设置窗口拖拽事件
+ * 处理主进程发来的应用变化事件
+ * 直接使用 IPC 传来的 appData，避免额外的 IPC 往返
+ * @param {Object} data - { processName, appData }
+ */
+function handleAppChanged(data) {
+  const { appData } = data;
+  updateCurrentApp(appData);
+}
+
+/**
+ * 设置窗口拖拽事件（仅标题栏可拖拽）
  */
 function setupDragEvents() {
-  document.body.classList.add('draggable-region');
+  // 仅标题栏可拖拽，避免干扰 body 中的交互元素
+  const header = document.querySelector('.header');
+  if (header) {
+    header.style.cursor = 'move';
+    header.addEventListener('mousedown', async (e) => {
+      // 跳过 Pin 按钮上的点击
+      if (e.target.closest('.pin-button')) return;
 
-  document.addEventListener('mousedown', async (e) => {
-    // 跳过交互元素
-    if (e.target.closest('.pin-button')) return;
-    if (e.target.closest('.search-box')) return;
-    if (e.target.closest('.shortcuts-container')) return;
+      state.isDragging = true;
+      state.dragStartX = e.screenX;
+      state.dragStartY = e.screenY;
 
-    state.isDragging = true;
-    state.dragStartX = e.screenX;
-    state.dragStartY = e.screenY;
+      const bounds = await window.keySenseAPI.getWindowBounds();
+      if (bounds) {
+        state.windowStartX = bounds.x;
+        state.windowStartY = bounds.y;
+      }
+      console.log(`[Drag] 开始拖拽: screen(${state.dragStartX}, ${state.dragStartY}), win(${state.windowStartX}, ${state.windowStartY})`);
 
-    const bounds = await window.keySenseAPI.getWindowBounds();
-    if (bounds) {
-      state.windowStartX = bounds.x;
-      state.windowStartY = bounds.y;
-    }
-    console.log(`[Drag] 开始拖拽: screen(${state.dragStartX}, ${state.dragStartY}), win(${state.windowStartX}, ${state.windowStartY})`);
-  });
+      const onMouseMove = (e) => {
+        if (!state.isDragging) return;
+        const newX = state.windowStartX + (e.screenX - state.dragStartX);
+        const newY = state.windowStartY + (e.screenY - state.dragStartY);
+        window.keySenseAPI.updateDraggedPosition(newX, newY);
+      };
 
-  document.addEventListener('mousemove', (e) => {
-    if (!state.isDragging) return;
+      const onMouseUp = (e) => {
+        if (!state.isDragging) return;
+        state.isDragging = false;
+        const finalX = state.windowStartX + (e.screenX - state.dragStartX);
+        const finalY = state.windowStartY + (e.screenY - state.dragStartY);
+        window.keySenseAPI.updateDraggedPosition(finalX, finalY);
+        console.log(`[Drag] 结束拖拽: (${finalX}, ${finalY})`);
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
+      };
 
-    const deltaX = e.screenX - state.dragStartX;
-    const deltaY = e.screenY - state.dragStartY;
-    const newX = state.windowStartX + deltaX;
-    const newY = state.windowStartY + deltaY;
-
-    // 直接移动窗口（实时跟随）
-    window.keySenseAPI.updateDraggedPosition(newX, newY);
-  });
-
-  document.addEventListener('mouseup', (e) => {
-    if (!state.isDragging) return;
-
-    state.isDragging = false;
-    const deltaX = e.screenX - state.dragStartX;
-    const deltaY = e.screenY - state.dragStartY;
-    const finalX = state.windowStartX + deltaX;
-    const finalY = state.windowStartY + deltaY;
-
-    console.log(`[Drag] 结束拖拽: final(${finalX}, ${finalY})`);
-    window.keySenseAPI.updateDraggedPosition(finalX, finalY);
-  });
+      document.addEventListener('mousemove', onMouseMove);
+      document.addEventListener('mouseup', onMouseUp);
+    });
+  }
 }
 
 /**

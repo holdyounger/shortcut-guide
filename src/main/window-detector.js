@@ -176,6 +176,23 @@ class WindowDetector {
   }
 
   /**
+   * 立即检测一次（不等待轮询，用于 get-current-app IPC 快速返回）
+   * @returns {Promise<string|null>} 当前检测到的进程名
+   */
+  async detect() {
+    try {
+      const processName = await getActiveProcess();
+      if (this._isKeySenseWindow(processName)) {
+        return this.currentProcess; // 保留上一个有效值
+      }
+      this.currentProcess = processName;
+      return processName;
+    } catch (err) {
+      return this.currentProcess; // 出错时返回缓存值
+    }
+  }
+
+  /**
    * 停止检测
    */
   stop() {

@@ -47,15 +47,15 @@ html, body {
   box-shadow: 0 4px 20px var(--shadow-color);
 }
 
-/* ========== 可拖拽区域（整个 body） ========== */
-body.draggable-region {
+/* ========== 可拖拽区域（仅标题栏） ========== */
+.header {
   -webkit-app-region: drag;
+  cursor: move;
 }
 
 /* 交互元素排除拖拽（必须单独标注） */
-body.draggable-region .pin-button,
-body.draggable-region .search-box input,
-body.draggable-region .shortcuts-container {
+.header .pin-button,
+.header .search-box input {
   -webkit-app-region: no-drag;
 }
 
@@ -338,11 +338,11 @@ body.draggable-region .shortcuts-container {
   animation: pinPulse 2.5s ease-in-out infinite;
 }
 
-/* pinned 时切换图标 */
+/* pinned 时切换图标并放大 */
 .pin-button.pinned .pin-icon--unpinned { display: none; }
 .pin-button.pinned .pin-icon--pinned   { display: block; }
-.pin-button.pinned .pin-icon { transform: rotate(0deg) scale(1.1); }
-.pin-button.pinned:hover .pin-icon { transform: rotate(-10deg) scale(1.2); }
+.pin-button.pinned .pin-icon { transform: scale(1.15); }
+.pin-button.pinned:hover .pin-icon { transform: scale(1.3); }
 
 /* 脉冲动画 */
 @keyframes pinPulse {

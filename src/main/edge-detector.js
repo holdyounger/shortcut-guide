@@ -52,7 +52,48 @@ class EdgeDetector {
       this._checkMousePosition();
     }, this.checkInterval);
 
+    // Bug 4 修复：监听渲染进程的鼠标进入/离开事件
+    // 窗口加载完成后，通过 preload API 从渲染进程接收鼠标事件
+    this.mainWindow.webContents.on('did-finish-load', () => {
+      console.log('[EdgeDetector] 窗口加载完成，mouseenter/leave 监听就绪');
+    });
+
     console.log('[EdgeDetector] 启动边缘检测');
+  }
+
+  /**
+   * 鼠标进入窗口（由渲染进程通过 IPC 触发）
+   */
+  onMouseEnter() {
+    if (this.isPinned) return; // 固定模式下不处理
+
+    // 如果窗口不可见，显示它
+    if (!this.isWindowVisible) {
+      try {
+        const point = screen.getCursorScreenPoint();
+        const display = screen.getDisplayNearestPoint(point);
+        this._showWindow(display);
+      } catch (err) {
+        // fallback：直接显示
+        this._showWindow();
+      }
+    }
+    // 取消隐藏计时器（鼠标在窗口内不应该隐藏）
+    this._cancelHideTimer();
+    console.log('[EdgeDetector] 鼠标进入窗口，显示并取消隐藏');
+  }
+
+  /**
+   * 鼠标离开窗口（由渲染进程通过 IPC 触发）
+   */
+  onMouseLeave() {
+    if (this.isPinned) return; // 固定模式下不处理
+
+    // 离开窗口后启动隐藏计时器
+    if (this.isWindowVisible) {
+      this._startHideTimer();
+    }
+    console.log('[EdgeDetector] 鼠标离开窗口，启动隐藏计时器');
   }
 
   /**

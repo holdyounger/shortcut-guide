@@ -69,6 +69,44 @@ contextBridge.exposeInMainWorld('keySenseAPI', {
   },
 
   /**
+   * 监听鼠标进入窗口事件
+   * @param {Function} callback - 回调函数 () => {}
+   */
+  onMouseEnter: (callback) => {
+    ipcRenderer.on('mouse-enter', () => callback());
+  },
+
+  /**
+   * 监听鼠标离开窗口事件
+   * @param {Function} callback - 回调函数 () => {}
+   */
+  onMouseLeave: (callback) => {
+    ipcRenderer.on('mouse-leave', () => callback());
+  },
+
+  /**
+   * 移除鼠标事件监听
+   */
+  removeMouseListeners: () => {
+    ipcRenderer.removeAllListeners('mouse-enter');
+    ipcRenderer.removeAllListeners('mouse-leave');
+  },
+
+  /**
+   * 向主进程报告鼠标进入窗口（用于 Bug 4）
+   */
+  mouseEnter: () => {
+    ipcRenderer.send('mouse-enter');
+  },
+
+  /**
+   * 向主进程报告鼠标离开窗口（用于 Bug 4）
+   */
+  mouseLeave: () => {
+    ipcRenderer.send('mouse-leave');
+  },
+
+  /**
    * 验证主进程固定状态（调试用）
    * @returns {Promise<boolean>}
    */
