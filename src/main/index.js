@@ -56,8 +56,10 @@ class KeySenseApp {
     // 加载渲染进程页面
     this.mainWindow.loadFile(path.join(__dirname, '../renderer/index.html'));
 
-    // 初始隐藏
-    this.mainWindow.hide();
+    // 初始显示（立即可见，欢迎页随之弹出）
+    this.mainWindow.show();
+    // 显示欢迎页/快捷键面板
+    this.edgeDetector.showWelcome();
 
     // 开发模式下打开 DevTools
     if (process.env.NODE_ENV === 'development') {

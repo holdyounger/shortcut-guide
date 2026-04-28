@@ -329,6 +329,16 @@ class EdgeDetector {
   setMainWindow(mainWindow) {
     this.mainWindow = mainWindow;
   }
+
+  /**
+   * 启动时立即显示窗口（让欢迎页可见）
+   */
+  showWelcome() {
+    if (!this.mainWindow || this.mainWindow.isDestroyed()) return;
+    this.mainWindow.setOpacity(1);
+    this.isWindowVisible = true;
+    console.log('[EdgeDetector] 启动时显示窗口（欢迎页）');
+  }
 }
 
 module.exports = EdgeDetector;
