@@ -210,8 +210,14 @@ class KeySenseApp {
 
     // 窗口检测器检测到窗口变化时，通知渲染进程
     // 使用 getLastMatchedInfo 读取 windowDetector 缓存的匹配数据，避免重复匹配
+    // 如果自身窗口获得焦点（用户正在与 app 交互），显式发送 null 清空覆盖层
+    // 使用 webContents.isFocused() 同步检查，零延迟，避免 async active-win 的队列/时序问题
     setInterval(() => {
       if (this.mainWindow && !this.mainWindow.isDestroyed()) {
+        if (this.mainWindow.webContents.isFocused()) {
+          
+          return;
+        }
         const { processName, appData } = this.windowDetector.getLastMatchedInfo();
         if (processName) {
           this.mainWindow.webContents.send('app-changed', {

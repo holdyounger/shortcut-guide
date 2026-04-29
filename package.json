@@ -44,7 +44,7 @@
   },
   "build": {
     "appId": "com.openclaw.shortcut-guide",
-    "productName": "快捷键提示器",
+    "productName": "shortcut-guide",
     "directories": {
       "output": "build"
     },
