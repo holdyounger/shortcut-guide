@@ -412,8 +412,9 @@ class KeySenseApp {
       { type: 'separator' },
       {
         label: '退出',
-        click: () => {
-          app.quit();
+        click: async () => {
+          await this.cleanup();
+          app.exit(0);
         },
       },
     ]);
@@ -511,7 +512,7 @@ class KeySenseApp {
       case 'overlay_visible':
         // mouse-enter（overlay 显示）→ 慢速检测（1000ms），用户与 app 交互中
         this._startOverlayVisibleInterval(); // 1000ms
-        if (this.windowDetector) this.windowDetector.setOverlayInterval(1000);
+        if (this.windowDetector) this.windowDetector.setOverlayInterval(800);
         // 立即发送一次当前 app 数据
         this._sendCurrentAppInfo();
         break;
@@ -604,7 +605,7 @@ class KeySenseApp {
   /**
    * 清理资源
    */
-  cleanup() {
+  async cleanup() {
     // 注销全局快捷键
     globalShortcut.unregisterAll();
 
@@ -622,9 +623,9 @@ class KeySenseApp {
       this.tray = null;
     }
 
-    // 关闭窗口
+    // 关闭窗口（pinned 窗口用 destroy 强制关闭，不用 close）
     if (this.mainWindow && !this.mainWindow.isDestroyed()) {
-      this.mainWindow.close();
+      this.mainWindow.destroy();
     }
 
     console.log('[Main] 资源清理完成');
@@ -652,8 +653,11 @@ app.on('activate', () => {
 });
 
 // 应用退出前清理
-app.on('before-quit', () => {
-  keySenseApp.cleanup();
+app.on('before-quit', (event) => {
+  event.preventDefault(); // 阻止自动退出，等 cleanup 完成
+  keySenseApp.cleanup().then(() => {
+    app.exit(0);
+  });
 });
 
 // 导出供测试使用
