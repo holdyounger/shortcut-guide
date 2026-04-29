@@ -279,7 +279,7 @@ function updateCurrentApp(appData) {
     loadShortcuts(appData.appId);
   } else {
     // 无应用数据
-    elements.appName.textContent = '未知应用';
+    elements.appName.textContent = 'Initializing...';
     elements.appProcess.textContent = '';
     header.classList.remove('unadapted');
     showEmptyState('未检测到有效应用');

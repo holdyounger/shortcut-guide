@@ -31,7 +31,7 @@
         {"key": "Esc","action": "停止加载","category": "导航" },
         {"key": "F5","action": "刷新页面","category": "导航" },
         {"key": "Ctrl+F5","action": "强制刷新（清除缓存）","category": "导航" },
-        {"key": "Ctrl++","action": "放大页面","category": "缩放" },
+        {"key": "Ctrl+＋","action": "放大页面","category": "缩放" },
         {"key": "Ctrl+-","action": "缩小页面","category": "缩放" },
         {"key": "Ctrl+0","action": "恢复默认缩放","category": "缩放"
         }
