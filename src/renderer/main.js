@@ -68,10 +68,7 @@ async function init() {
       window.keySenseAPI.mouseEnter();
     });
     appEl.addEventListener('mouseleave', () => {
-      // 欢迎页未关闭时，不启动 5s 隐藏倒计时
-      if (state.welcomeDismissed) {
-        window.keySenseAPI.mouseLeave();
-      }
+      window.keySenseAPI.mouseLeave();
     });
     console.log('[Renderer] 鼠标进入/离开监听已注册');
   }
@@ -107,7 +104,7 @@ function checkWelcome() {
       state.welcomeDismissed = false;
       console.log('[Renderer] 首次启动，显示欢迎页（需手动关闭）');
     } else {
-      // 非首次启动：立即启用5s自动隐藏逻辑，欢迎页5s后自动关闭
+      // 非首次启动（进程重启）：立即启用5s自动隐藏逻辑，欢迎页5s后自动关闭
       state.welcomeDismissed = true;
       window.keySenseAPI.welcomeDismissed();
       state.welcomeAutoCloseTimer = setTimeout(() => {

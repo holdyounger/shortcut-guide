@@ -60,6 +60,7 @@ class KeySenseApp {
       alwaysOnTop: true, // 始终置顶
       resizable: false, // 禁止调整大小
       minimizable: false, // 禁止最小化（防止右键菜单最小化后无法恢复）
+      closable: false, // 禁止关闭（防止右键菜单关闭后无法恢复）
       skipTaskbar: true, // 不显示在任务栏
       show: false, // 初始隐藏
       opacity: this.windowOpacity,
@@ -119,10 +120,29 @@ class KeySenseApp {
   /**
    * 初始化边缘检测器
    */
-  initEdgeDetector() {
+  /**
+   * 初始化 EdgeDetector（不含欢迎页，可重复调用）
+   * recreateWindow() 调用此方法，避免重复弹出欢迎页
+   * @private
+   */
+  _initEdgeDetector() {
+    // 停止旧的 EdgeDetector（安全销毁，防止重复监听）
+    if (this.edgeDetector) {
+      this.edgeDetector.stop();
+    }
     this.edgeDetector = new EdgeDetector(this.mainWindow);
+    this.edgeDetector.setOnHidden(() => {
+      this._setOverlayState('hidden');
+    });
     this.edgeDetector.start();
-    // 立即显示窗口，让欢迎页可见
+  }
+
+  /**
+   * 初始化 EdgeDetector（仅首次调用，包含欢迎页）
+   */
+  initEdgeDetector() {
+    this._initEdgeDetector();
+    // 立即显示窗口，让欢迎页可见（仅首次启动时需要）
     this.edgeDetector.showWelcome();
   }
 
@@ -253,7 +273,81 @@ class KeySenseApp {
       this.edgeDetector.toggle();
     });
 
+    // 双击托盘图标：即使窗口被关闭，也重新创建并显示
+    this.tray.on('double-click', () => {
+      console.log('[Main] 托盘图标双击');
+      this.recreateWindow();
+    });
+
     console.log('[Main] 系统托盘初始化完成');
+  }
+
+  /**
+   * 重新创建 BrowserWindow（窗口被关闭后，双击托盘时调用）
+   * @private
+   */
+  recreateWindow() {
+    const wasDestroyed = !this.mainWindow || this.mainWindow.isDestroyed();
+    console.log(`[Main] recreateWindow: wasDestroyed=${wasDestroyed}`);
+
+    if (wasDestroyed) {
+      // 重新创建 BrowserWindow（与 createWindow 相同配置）
+      const { width, height } = screen.getPrimaryDisplay().workAreaSize;
+      const windowWidth = 300;
+
+      this.mainWindow = new BrowserWindow({
+        width: windowWidth,
+        height: 400,
+        x: width - windowWidth,
+        y: 0,
+        frame: false,
+        transparent: true,
+        alwaysOnTop: true,
+        resizable: false,
+        minimizable: false,
+        closable: false,
+        skipTaskbar: true,
+        show: false,
+        opacity: this.windowOpacity,
+        webPreferences: {
+          nodeIntegration: false,
+          contextIsolation: true,
+          preload: path.join(__dirname, '../renderer/preload.js'),
+        },
+      });
+
+      // 窗口关闭时清空引用
+      this.mainWindow.on('closed', () => {
+        this.mainWindow = null;
+      });
+
+      // 防止通过系统菜单最小化
+      this.mainWindow.on('minimize', (e) => {
+        e.preventDefault();
+        this.mainWindow.restore();
+      });
+
+      // 失焦时通知渲染进程
+      this.mainWindow.on('blur', () => {
+        if (this.mainWindow && !this.mainWindow.isDestroyed()) {
+          this.mainWindow.webContents.send('window-blur');
+        }
+      });
+
+      // 加载页面
+      this.mainWindow.loadFile(path.join(__dirname, '../renderer/index.html'));
+
+      // 开发模式打开 DevTools
+      if (process.env.NODE_ENV === 'development') {
+        this.mainWindow.webContents.openDevTools({ mode: 'detach' });
+      }
+
+      // 重新初始化 EdgeDetector（不弹欢迎页，进程存活期间只弹一次）
+      this._initEdgeDetector();
+    }
+
+    // 显示窗口
+    this.edgeDetector.forceShow();
   }
 
   /**
@@ -425,7 +519,7 @@ class KeySenseApp {
       case 'hidden':
         // overlay 已完全隐藏 → 极低频率（3000ms）
         this._startHiddenInterval(); // 3000ms
-        if (this.windowDetector) this.windowDetector.setOverlayInterval(2000);
+        if (this.windowDetector) this.windowDetector.setOverlayInterval(3000);
         break;
     }
   }
@@ -492,10 +586,6 @@ class KeySenseApp {
     this.initWindowDetector();
     this.initEdgeDetector();
     // overlay 隐藏时通知主进程切换到极低频率（3000ms）
-    this.edgeDetector.setOnHidden(() => {
-      this._setOverlayState('hidden');
-    });
-
     // 传递配置给边缘检测器
     this.edgeDetector.setHideDelay(this.hideDelay);
 

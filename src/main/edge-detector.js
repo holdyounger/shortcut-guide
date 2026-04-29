@@ -93,7 +93,8 @@ class EdgeDetector {
 
   onMouseLeave() {
     if (this.isPinned) return;
-    if (this._isFadingOut) return; // 淡出期间忽略鼠标事件
+    if (this._isFadingOut) return;       // 淡出期间忽略鼠标事件
+    if (!this._welcomeDismissed) return; // 欢迎页未关闭时，不触发倒计时
     if (this.isWindowVisible) {
       this._startHideTimer();
     }
