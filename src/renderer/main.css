@@ -543,3 +543,48 @@ html, body {
 .welcome-btn:active {
   transform: translateY(0);
 }
+
+/* ========== 未适配应用样式 ========== */
+
+/* 未适配时标题栏变为灰色调 */
+.header.unadapted {
+  background: linear-gradient(135deg, #555555, #3d3d3d);
+}
+
+.header.unadapted .app-name {
+  opacity: 0.85;
+}
+
+.header.unadapted .app-process {
+  opacity: 0.5;
+}
+
+/* 未适配徽章 */
+.unadapted-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  background: rgba(255, 165, 0, 0.15);
+  border: 1px solid rgba(255, 165, 0, 0.35);
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #ffa500;
+  margin-top: 8px;
+  letter-spacing: 0.5px;
+}
+
+/* 未适配空状态 */
+.unadapted-state .empty-state-icon {
+  opacity: 0.4;
+}
+
+.unadapted-state .empty-state-text {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.unadapted-state .empty-state-hint {
+  margin-top: 4px;
+  color: var(--text-muted);
+}

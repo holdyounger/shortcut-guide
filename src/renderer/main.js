@@ -246,12 +246,26 @@ async function loadCurrentApp() {
  */
 function updateCurrentApp(appData) {
   state.currentApp = appData;
-  elements.appName.textContent = appData ? appData.name : '未知应用';
-  elements.appProcess.textContent = appData ? `(${appData.processNames[0]})` : '';
 
-  if (appData) {
+  const header = document.querySelector('.header');
+
+  if (appData && !appData.adapted) {
+    // 未适配应用：显示进程名，添加未适配样式
+    elements.appName.textContent = appData.name;
+    elements.appProcess.textContent = `(${appData.processNames[0]})`;
+    header.classList.add('unadapted');
+    showUnadaptedState(appData.name);
+  } else if (appData) {
+    // 已适配应用：正常显示
+    elements.appName.textContent = appData.name;
+    elements.appProcess.textContent = `(${appData.processNames[0]})`;
+    header.classList.remove('unadapted');
     loadShortcuts(appData.appId);
   } else {
+    // 无应用数据
+    elements.appName.textContent = '未知应用';
+    elements.appProcess.textContent = '';
+    header.classList.remove('unadapted');
     showEmptyState('未检测到有效应用');
   }
 }
@@ -340,6 +354,22 @@ function renderShortcuts() {
 function handleSearch() {
   state.searchQuery = elements.searchInput.value;
   filterAndRenderShortcuts();
+}
+
+/**
+ * 显示未适配应用状态
+ * @param {string} appName - 应用名称
+ */
+function showUnadaptedState(appName) {
+  elements.shortcutsContainer.innerHTML = `
+    <div class="empty-state unadapted-state">
+      <div class="empty-state-icon">🔍</div>
+      <div class="empty-state-text">${appName}</div>
+      <div class="unadapted-badge">未适配</div>
+      <div class="empty-state-hint">该应用暂未收录快捷键数据</div>
+    </div>
+  `;
+  elements.totalCount.textContent = '0 个快捷键';
 }
 
 /**

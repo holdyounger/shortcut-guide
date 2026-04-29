@@ -208,8 +208,8 @@ class WindowDetector {
    * @param {string} processName
    */
   _notifyMain(processName) {
-    const matchedApp = this.dataManager.matchApp(processName);
-    console.log('[WindowDetector] 匹配到应用: ' + (matchedApp ? matchedApp.name : '未知'));
+    const matchedApp = this.dataManager.matchAppOrSynthesize(processName);
+    console.log('[WindowDetector] 匹配到应用: ' + matchedApp.name + (matchedApp.adapted ? '' : '（未适配）'));
     // 将 appData 写入共享存储，供 setupIPC 读取并通过 IPC 发送
     this._lastMatchedApp = matchedApp;
   }

@@ -196,6 +196,56 @@ class DataManager {
   }
 
   /**
+   * 根据进程名匹配应用，未匹配时合成一个占位应用数据
+   * 与 matchApp 不同，此方法始终返回非 null 结果，用于 UI 显示
+   * @param {string} processName - 进程名（如 "chrome.exe"）
+   * @returns {{ appId: string, name: string, processNames: string[], adapted: boolean, shortcuts: Array, type: string }}
+   */
+  matchAppOrSynthesize(processName) {
+    if (!processName) {
+      return {
+        appId: '__unknown__',
+        name: '未知应用',
+        processNames: [],
+        adapted: false,
+        shortcuts: [],
+        type: 'unknown',
+      };
+    }
+
+    // 先尝试正常匹配
+    const matched = this.matchApp(processName);
+    if (matched) {
+      return { ...matched, adapted: true };
+    }
+
+    // 未匹配：合成占位数据，将进程名转为可读的应用名
+    const displayName = this._processNameToDisplayName(processName);
+    return {
+      appId: `__unadapted__${processName.toLowerCase()}`,
+      name: displayName,
+      processNames: [processName],
+      adapted: false,
+      shortcuts: [],
+      type: 'unadapted',
+    };
+  }
+
+  /**
+   * 将进程名转为可读的应用名
+   * 例如: "chrome.exe" -> "Chrome", "Code.exe" -> "Code"
+   * @param {string} processName
+   * @returns {string}
+   */
+  _processNameToDisplayName(processName) {
+    // 去掉 .exe 后缀
+    let name = processName.replace(/\.exe$/i, '');
+    // 首字母大写
+    name = name.charAt(0).toUpperCase() + name.slice(1);
+    return name;
+  }
+
+  /**
    * 获取指定应用的快捷键
    * @param {string} appId - 应用ID
    * @returns {Array} 快捷键列表

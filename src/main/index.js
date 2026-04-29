@@ -128,7 +128,7 @@ class KeySenseApp {
       await this.windowDetector.detect();
       const processName = this.windowDetector.getCurrentProcess();
       if (!processName) return null;
-      const appData = this.dataManager.matchApp(processName);
+      const appData = this.dataManager.matchAppOrSynthesize(processName);
       return appData;
     });
 
