@@ -31,6 +31,12 @@ class KeySenseApp {
     this.tray = null;
     /** @type {ConfigStore} 用户配置存储 */
     this.configStore = new ConfigStore();
+    /** @type {string} overlay 状态机: 'hidden' | 'counting_down' | 'overlay_visible' */
+    this._overlayState = 'hidden';
+    /** @type {number|null} 快速轮询定时器 ID（overlay 可见时，300ms） */
+    this._fastIntervalId = null;
+    /** @type {number|null} 慢速轮询定时器 ID（overlay 隐藏时，5000ms） */
+    this._slowIntervalId = null;
     /** @type {number} 窗口透明度 (0.0 ~ 1.0) */
     this.windowOpacity = this.configStore.getOpacity();
     /** @type {number} 隐藏倒计时时间（毫秒） */
@@ -199,34 +205,22 @@ class KeySenseApp {
       return true;
     });
 
-    // 鼠标进入/离开窗口事件（用于 Bug 4：进入窗口即触发显示）
+    // 鼠标进入/离开窗口事件
     ipcMain.on('mouse-enter', () => {
       this.edgeDetector.onMouseEnter();
+      // 鼠标进入自身窗口 → overlay 显示 → 慢速检测（1000ms）
+      this._setOverlayState('overlay_visible');
     });
 
     ipcMain.on('mouse-leave', () => {
       this.edgeDetector.onMouseLeave();
+      // 鼠标离开自身窗口 → 开始倒计时消失 → 快速检测（200ms）
+      this._setOverlayState('counting_down');
     });
 
-    // 窗口检测器检测到窗口变化时，通知渲染进程
-    // 使用 getLastMatchedInfo 读取 windowDetector 缓存的匹配数据，避免重复匹配
-    // 如果自身窗口获得焦点（用户正在与 app 交互），显式发送 null 清空覆盖层
-    // 使用 webContents.isFocused() 同步检查，零延迟，避免 async active-win 的队列/时序问题
-    setInterval(() => {
-      if (this.mainWindow && !this.mainWindow.isDestroyed()) {
-        if (this.mainWindow.webContents.isFocused()) {
-          
-          return;
-        }
-        const { processName, appData } = this.windowDetector.getLastMatchedInfo();
-        if (processName) {
-          this.mainWindow.webContents.send('app-changed', {
-            processName,
-            appData,
-          });
-        }
-      }
-    }, 500); // 每 500ms 同步一次
+
+    // 启动动态轮询（默认 hidden 状态，极低频率 3000ms）
+    this._startHiddenInterval();
 
     console.log('[Main] IPC 通信设置完成');
   }
@@ -334,6 +328,131 @@ class KeySenseApp {
   }
 
   /**
+   * 向渲染进程发送当前活动窗口数据（内部使用）
+   * @private
+   */
+  _sendCurrentAppInfo() {
+    if (!this.mainWindow || this.mainWindow.isDestroyed()) return;
+    // 自身窗口有焦点：不显示覆盖层
+    if (this.mainWindow.webContents.isFocused()) return;
+    const { processName, appData } = this.windowDetector.getLastMatchedInfo();
+    if (processName) {
+      this.mainWindow.webContents.send('app-changed', { processName, appData });
+    }
+  }
+
+  /**
+   * 启动快速轮询（overlay 可见时，每 300ms 同步一次）
+   * @private
+   */
+  _startFastInterval() {
+    if (this._fastIntervalId !== null) return; // 已在运行
+    this._fastIntervalId = setInterval(() => {
+      this._sendCurrentAppInfo();
+    }, 1000);
+    // console.log('[Main] 启动快速轮询: 300ms');
+  }
+
+  /**
+   * 停止快速轮询
+   * @private
+   */
+  _stopFastInterval() {
+    if (this._fastIntervalId !== null) {
+      clearInterval(this._fastIntervalId);
+      this._fastIntervalId = null;
+    }
+  }
+
+  /**
+   * 启动慢速轮询（overlay 隐藏时，每 5000ms 同步一次，降低 CPU 占用）
+   * @private
+   */
+  _startSlowInterval() {
+    if (this._slowIntervalId !== null) return; // 已在运行
+    this._slowIntervalId = setInterval(() => {
+      this._sendCurrentAppInfo();
+    }, 3000);
+    // console.log('[Main] 启动慢速轮询: 5000ms');
+  }
+
+  /**
+   * 停止慢速轮询
+   * @private
+   */
+  _stopSlowInterval() {
+    if (this._slowIntervalId !== null) {
+      clearInterval(this._slowIntervalId);
+      this._slowIntervalId = null;
+    }
+  }
+
+  /**
+   * 切换 overlay 可见性，并相应调整轮询间隔
+   * 同时通知 WindowDetector 调整检测频率（可见时 200ms，隐藏时 2000ms）
+   * @param {boolean} visible
+   */
+  /**
+   * 设置 overlay 状态机（3 个状态）
+   * @param {'hidden'|'counting_down'|'overlay_visible'} state
+   */
+  _setOverlayState(state) {
+    if (this._overlayState === state) return; // 无需切换
+
+    const prevState = this._overlayState;
+    this._overlayState = state;
+    console.log(`[Main] overlay 状态: ${prevState} → ${state}`);
+
+    // 先停止所有轮询
+    this._stopFastInterval();
+    this._stopSlowInterval();
+
+    switch (state) {
+      case 'counting_down':
+        // mouse-leave 后，overlay 倒计时消失中 → 快速检测（200ms）尽快捕获外部窗口
+        this._startFastInterval(); // 200ms
+        if (this.windowDetector) this.windowDetector.setOverlayInterval(200);
+        break;
+
+      case 'overlay_visible':
+        // mouse-enter（overlay 显示）→ 慢速检测（1000ms），用户与 app 交互中
+        this._startOverlayVisibleInterval(); // 1000ms
+        if (this.windowDetector) this.windowDetector.setOverlayInterval(1000);
+        // 立即发送一次当前 app 数据
+        this._sendCurrentAppInfo();
+        break;
+
+      case 'hidden':
+        // overlay 已完全隐藏 → 极低频率（3000ms）
+        this._startHiddenInterval(); // 3000ms
+        if (this.windowDetector) this.windowDetector.setOverlayInterval(2000);
+        break;
+    }
+  }
+
+  /**
+   * overlay 可见时专用轮询（1000ms）
+   * @private
+   */
+  _startOverlayVisibleInterval() {
+    if (this._fastIntervalId !== null) return;
+    this._fastIntervalId = setInterval(() => {
+      this._sendCurrentAppInfo();
+    }, 1000);
+  }
+
+  /**
+   * overlay 隐藏时专用轮询（3000ms）
+   * @private
+   */
+  _startHiddenInterval() {
+    if (this._slowIntervalId !== null) return;
+    this._slowIntervalId = setInterval(() => {
+      this._sendCurrentAppInfo();
+    }, 3000);
+  }
+
+  /**
    * 设置窗口透明度（同时持久化到配置）
    * @param {number} opacity - 透明度值 (0.0 ~ 1.0)
    */
@@ -372,6 +491,10 @@ class KeySenseApp {
     // 初始化检测器
     this.initWindowDetector();
     this.initEdgeDetector();
+    // overlay 隐藏时通知主进程切换到极低频率（3000ms）
+    this.edgeDetector.setOnHidden(() => {
+      this._setOverlayState('hidden');
+    });
 
     // 传递配置给边缘检测器
     this.edgeDetector.setHideDelay(this.hideDelay);

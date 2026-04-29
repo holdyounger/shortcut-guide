@@ -203,6 +203,32 @@ class WindowDetector {
   }
 
   /**
+   * 根据 overlay 状态动态调整检测间隔
+   * @param {number} interval - 检测间隔（毫秒）
+   */
+  setOverlayInterval(interval) {
+    if (!this.isActive) return;
+    clearInterval(this.intervalId);
+    this.intervalId = setInterval(async () => {
+      try {
+        const processName = await getActiveProcess();
+        if (this._isKeySenseWindow(processName)) {
+          return;
+        }
+        this.currentProcess = processName;
+        if (processName && processName !== this.lastProcess) {
+          console.log('[WindowDetector] 检测到窗口变化: ' + processName);
+          this.lastProcess = processName;
+          this._notifyMain(processName);
+        }
+      } catch (err) {
+        console.error('[WindowDetector] 检测错误: ' + err.message);
+      }
+    }, interval);
+    console.log(`[WindowDetector] 切换检测间隔: ${interval}ms`);
+  }
+
+  /**
    * 通知主进程当前活动窗口
    * @private
    * @param {string} processName

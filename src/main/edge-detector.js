@@ -43,6 +43,14 @@ class EdgeDetector {
   }
 
   /**
+   * 设置 overlay 隐藏时的回调（由主进程调用）
+   * @param {Function} callback
+   */
+  setOnHidden(callback) {
+    this._onHidden = callback;
+  }
+
+  /**
    * 启动边缘检测
    */
   start() {
@@ -255,6 +263,7 @@ class EdgeDetector {
         this._preferredSnapEdge = targetEdge;
         this._notifyRendererCountdown();
         console.log(`[EdgeDetector] 隐藏窗口（贴边: ${targetEdge}）`);
+        if (this._onHidden) this._onHidden();
       }
     }, frameInterval);
 
