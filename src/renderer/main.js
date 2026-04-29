@@ -26,6 +26,8 @@ const state = {
   countdownInterval: null,
   /** 欢迎页是否已关闭（关闭后才启动 5s 隐藏倒计时）*/
   welcomeDismissed: false,
+  /** 欢迎页自动关闭定时器 ID */
+  welcomeAutoCloseTimer: null,
 };
 
 // ========== DOM 元素 ==========
@@ -95,18 +97,26 @@ async function init() {
 function checkWelcome() {
   try {
     const welcomed = localStorage.getItem(WELCOME_KEY);
+    // 始终显示欢迎页
+    if (elements.welcomeOverlay) {
+      elements.welcomeOverlay.classList.add('visible');
+    }
+
     if (!welcomed) {
-      // 首次启动：显示欢迎页
-      if (elements.welcomeOverlay) {
-        elements.welcomeOverlay.classList.add('visible');
-        state.welcomeDismissed = false;
-        console.log('[Renderer] 首次启动，显示欢迎页');
-      }
+      // 首次启动：等待用户手动关闭欢迎页，不启用自动隐藏
+      state.welcomeDismissed = false;
+      console.log('[Renderer] 首次启动，显示欢迎页（需手动关闭）');
     } else {
-      // 非首次启动：直接通知主进程允许倒计时
+      // 非首次启动：立即启用5s自动隐藏逻辑，欢迎页5s后自动关闭
       state.welcomeDismissed = true;
       window.keySenseAPI.welcomeDismissed();
-      console.log('[Renderer] 非首次启动，跳过欢迎页');
+      state.welcomeAutoCloseTimer = setTimeout(() => {
+        state.welcomeAutoCloseTimer = null;
+        if (elements.welcomeOverlay && elements.welcomeOverlay.classList.contains('visible')) {
+          closeWelcome();
+        }
+      }, 5000);
+      console.log('[Renderer] 非首次启动，欢迎页5s后自动关闭');
     }
   } catch (err) {
     console.warn('[Renderer] localStorage 不可用:', err);
@@ -114,6 +124,12 @@ function checkWelcome() {
 }
 
 function closeWelcome() {
+  // 清除自动关闭定时器（用户手动关闭时）
+  if (state.welcomeAutoCloseTimer) {
+    clearTimeout(state.welcomeAutoCloseTimer);
+    state.welcomeAutoCloseTimer = null;
+  }
+
   state.welcomeDismissed = true;
   try {
     localStorage.setItem(WELCOME_KEY, '1');
