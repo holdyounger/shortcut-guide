@@ -50,6 +50,7 @@
     },
     "files": [
       "src/**/*",
+      "data/**/*",
       "package.json"
     ],
     "win": {
