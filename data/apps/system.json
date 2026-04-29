@@ -28,8 +28,7 @@
         {"key": "Ctrl+V","action": "粘贴","category": "编辑" },
         {"key": "Ctrl+A","action": "全选","category": "编辑" },
         {"key": "Alt+D","action": "选中地址栏","category": "导航" },
-        {"key": "Ctrl+L","action": "选中地址栏","category": "导航"
-        }
+        {"key": "Ctrl+L","action": "选中地址栏","category": "导航"}
       ],
       "type": "system"
     },
@@ -51,8 +50,7 @@
         {"key": "Alt+Shift+Arrow","action": "列选择","category": "编辑" },
         {"key": "Ctrl+Alt+F","action": "折叠代码","category": "编辑" },
         {"key": "Alt+0","action": "折叠全部","category": "其他" },
-        {"key": "Alt+Shift+0","action": "展开全部","category": "编辑"
-        }
+        {"key": "Alt+Shift+0","action": "展开全部","category": "编辑"}
       ]
     }
   },

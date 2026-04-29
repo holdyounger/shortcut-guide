@@ -10,24 +10,48 @@
         "windows"
       ],
       "shortcuts": [
-        {"key": "Ctrl+T","action": "自由变换","category": "搜索" },
-        {"key": "Ctrl+J","action": "复制图层","category": "编辑" },
-        {"key": "Ctrl+G","action": "图层编组","category": "编辑" },
-        {"key": "Ctrl+E","action": "合并图层","category": "编辑" },
-        {"key": "Ctrl+Shift+U","action": "去色","category": "文件" },
-        {"key": "Ctrl+L","action": "色阶","category": "编辑" },
-        {"key": "Ctrl+M","action": "曲线","category": "标签页" },
-        {"key": "Ctrl+U","action": "色相/饱和度","category": "编辑" },
-        {"key": "Ctrl+B","action": "色彩平衡","category": "编辑" },
-        {"key": "V","action": "移动工具","category": "工具" },
-        {"key": "C","action": "裁剪工具","category": "工具" },
-        {"key": "M","action": "选框工具","category": "工具" },
-        {"key": "L","action": "套索工具","category": "工具" },
-        {"key": "W","action": "魔棒工具","category": "演示"
-        }
+        {"key": "Ctrl+T","action": "自由变换","category": "搜索"},
+        {"key": "Ctrl+J","action": "复制图层","category": "编辑"},
+        {"key": "Ctrl+G","action": "图层编组","category": "编辑"},
+        {"key": "Ctrl+E","action": "合并图层","category": "编辑"},
+        {"key": "Ctrl+Shift+U","action": "去色","category": "文件"},
+        {"key": "Ctrl+L","action": "色阶","category": "编辑"},
+        {"key": "Ctrl+M","action": "曲线","category": "标签页"},
+        {"key": "Ctrl+U","action": "色相/饱和度","category": "编辑"},
+        {"key": "Ctrl+B","action": "色彩平衡","category": "编辑"},
+        {"key": "V","action": "移动工具","category": "工具"},
+        {"key": "C","action": "裁剪工具","category": "工具"},
+        {"key": "M","action": "选框工具","category": "工具"},
+        {"key": "L","action": "套索工具","category": "工具"},
+        {"key": "W","action": "魔棒工具","category": "演示"}
+      ]
+    },
+    "cloudmusic": {
+      "name": "网易云音乐",
+      "processNames": [
+        "cloudmusic",
+        "cloudmusic.exe",
+        "NeteaseCloudMusic"
+      ],
+      "platforms": [
+        "windows"
+      ],
+      "shortcuts": [
+        {"key": "Ctrl+P","action": "播放/暂停","category": "播放"},
+        {"key": "Ctrl+Right","action": "下一曲","category": "播放"},
+        {"key": "Ctrl+Left","action": "上一曲","category": "播放"},
+        {"key": "Ctrl+Up","action": "增加音量","category": "播放"},
+        {"key": "Ctrl+Down","action": "减少音量","category": "播放"},
+        {"key": "Ctrl+M","action": "Mini/桌面歌词模式","category": "播放"},
+        {"key": "Ctrl+L","action": "喜欢/取消喜欢当前歌曲","category": "收藏"},
+        {"key": "Ctrl+D","action": "开启/关闭桌面歌词","category": "歌词"},
+        {"key": "Space","action": "播放/暂停（焦点在窗口时）","category": "播放"},
+        {"key": "Ctrl+Shift+U","action": "翻译歌词","category": "歌词"},
+        {"key": "Ctrl+B","action": "开启/关闭歌词翻译","category": "歌词"},
+        {"key": "Ctrl+Shift+S","action": "分享歌曲","category": "社交"}
       ]
     }
   },
   "type": "media",
-  "count": 1
+  "count": 2
 }

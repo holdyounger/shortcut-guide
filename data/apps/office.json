@@ -41,8 +41,7 @@
         {"key": "Ctrl+K","action": "插入超链接","category": "插入" },
         {"key": "Ctrl+Home","action": "跳转到文档开头","category": "导航" },
         {"key": "Ctrl+End","action": "跳转到文档末尾","category": "导航" },
-        {"key": "F7","action": "拼写和语法检查","category": "审阅"
-        }
+        {"key": "F7","action": "拼写和语法检查","category": "审阅"}
       ],
       "type": "office"
     },
@@ -81,8 +80,7 @@
         {"key": "Ctrl+E","action": "居中对齐","category": "格式" },
         {"key": "Ctrl+L","action": "左对齐","category": "格式" },
         {"key": "Ctrl+R","action": "右对齐","category": "格式" },
-        {"key": "F1","action": "打开帮助中心","category": "帮助"
-        }
+        {"key": "F1","action": "打开帮助中心","category": "帮助"}
       ],
       "type": "office"
     },
@@ -107,8 +105,7 @@
         {"key": "Ctrl+Shift+1","action": "格式化为数字","category": "文件" },
         {"key": "Ctrl+Shift+4","action": "格式化为货币","category": "文件" },
         {"key": "Ctrl+D","action": "向下填充","category": "编辑" },
-        {"key": "Ctrl+R","action": "向右填充","category": "编辑"
-        }
+        {"key": "Ctrl+R","action": "向右填充","category": "编辑"}
       ]
     },
     "powerpoint": {
@@ -127,8 +124,7 @@
         {"key": "B","action": "黑屏/取消黑屏","category": "演示" },
         {"key": "W","action": "白屏/取消白屏","category": "演示" },
         {"key": "E","action": "擦除笔","category": "演示" },
-        {"key": "Ctrl+P","action": "激光笔/笔","category": "文件"
-        }
+        {"key": "Ctrl+P","action": "激光笔/笔","category": "文件"}
       ]
     }
   },

@@ -5,24 +5,34 @@
       "processNames": [
         "wechat",
         "wechat.exe",
-        "wechatapp"
+        "wechatapp",
+        "wechatappex",
+        "wechatappex.exe",
+        "weixin",
+        "weixin.exe "
       ],
       "platforms": [
         "windows",
         "macos"
       ],
       "shortcuts": [
-        {"key": "Ctrl+Alt+W","action": "打开/隐藏微信窗口","category": "窗口" },
-        {"key": "Ctrl+F","action": "搜索聊天记录","category": "搜索" },
-        {"key": "Ctrl+N","action": "新建聊天","category": "聊天" },
-        {"key": "Enter","action": "发送消息","category": "聊天" },
-        {"key": "Ctrl+Enter","action": "换行（不发送）","category": "聊天" },
-        {"key": "Ctrl+Alt+F","action": "全屏截图","category": "截图" },
-        {"key": "Alt+A","action": "截图","category": "截图" },
-        {"key": "Ctrl+Shift+L","action": "切换联系人列表","category": "导航" },
-        {"key": "Ctrl+Shift+C","action": "打开聊天窗口","category": "导航" },
-        {"key": "F1","action": "打开帮助","category": "帮助"
-        }
+        {"key": "Ctrl+Alt+W","action": "打开/隐藏微信窗口","category": "窗口"},
+        {"key": "Ctrl+F","action": "搜索聊天记录","category": "搜索"},
+        {"key": "Ctrl+N","action": "新建聊天","category": "聊天"},
+        {"key": "Enter","action": "发送消息","category": "聊天"},
+        {"key": "Ctrl+Enter","action": "换行（不发送）","category": "聊天"},
+        {"key": "Ctrl+Alt+F","action": "全屏截图","category": "截图"},
+        {"key": "Alt+A","action": "截图","category": "截图"},
+        {"key": "Ctrl+Shift+L","action": "切换联系人列表","category": "导航"},
+        {"key": "Ctrl+Shift+C","action": "打开聊天窗口","category": "导航"},
+        {"key": "F1","action": "打开帮助","category": "帮助"},
+        {"key": "Ctrl+Shift+T","action": "引用并回复","category": "聊天"},
+        {"key": "Ctrl+Shift+H","action": "查看聊天记录","category": "聊天"},
+        {"key": "Ctrl+Shift+M","action": "切换静音模式","category": "聊天"},
+        {"key": "Ctrl+D","action": "删除消息","category": "聊天"},
+        {"key": "Ctrl+R","action": "刷新聊天","category": "聊天"},
+        {"key": "Alt+S","action": "收藏消息","category": "聊天"},
+        {"key": "Ctrl+Shift+W","action": "最小化微信窗口","category": "窗口"}
       ],
       "type": "communication"
     },
@@ -36,12 +46,11 @@
         "windows"
       ],
       "shortcuts": [
-        {"key": "Ctrl+Alt+Z","action": "打开QQ","category": "编辑" },
-        {"key": "Ctrl+Alt+L","action": "锁定QQ","category": "编辑" },
-        {"key": "Alt+W","action": "切换聊天窗口","category": "标签页" },
-        {"key": "F2","action": "引用消息","category": "编辑" },
-        {"key": "Ctrl+Enter","action": "发送消息","category": "编辑"
-        }
+        {"key": "Ctrl+Alt+Z","action": "打开QQ","category": "编辑"},
+        {"key": "Ctrl+Alt+L","action": "锁定QQ","category": "编辑"},
+        {"key": "Alt+W","action": "切换聊天窗口","category": "标签页"},
+        {"key": "F2","action": "引用消息","category": "编辑"},
+        {"key": "Ctrl+Enter","action": "发送消息","category": "编辑"}
       ]
     },
     "dingtalk": {
@@ -55,16 +64,15 @@
         "windows"
       ],
       "shortcuts": [
-        {"key": "Ctrl+D","action": "新建对话","category": "编辑" },
-        {"key": "Ctrl+/","action": "搜索","category": "搜索" },
-        {"key": "Alt+A","action": "截屏","category": "截图" },
-        {"key": "Enter","action": "发送消息","category": "演示" },
-        {"key": "Ctrl+Shift+K","action": "开新会话","category": "文件" },
-        {"key": "Ctrl+Shift+C","action": "切换对话","category": "文件" },
-        {"key": "Ctrl+J","action": "收藏消息","category": "编辑" },
-        {"key": "Alt+S","action": "截图标注","category": "截图" },
-        {"key": "Ctrl+T","action": "新建T聊","category": "搜索"
-        }
+        {"key": "Ctrl+D","action": "新建对话","category": "编辑"},
+        {"key": "Ctrl+/","action": "搜索","category": "搜索"},
+        {"key": "Alt+A","action": "截屏","category": "截图"},
+        {"key": "Enter","action": "发送消息","category": "演示"},
+        {"key": "Ctrl+Shift+K","action": "开新会话","category": "文件"},
+        {"key": "Ctrl+Shift+C","action": "切换对话","category": "文件"},
+        {"key": "Ctrl+J","action": "收藏消息","category": "编辑"},
+        {"key": "Alt+S","action": "截图标注","category": "截图"},
+        {"key": "Ctrl+T","action": "新建T聊","category": "搜索"}
       ]
     },
     "feishu": {
@@ -78,14 +86,13 @@
         "windows"
       ],
       "shortcuts": [
-        {"key": "Ctrl+Alt+I","action": "打开工作台","category": "编辑" },
-        {"key": "Ctrl+/","action": "全局搜索","category": "搜索" },
-        {"key": "Ctrl+Shift+M","action": "发起会议","category": "文件" },
-        {"key": "Enter","action": "发送消息","category": "演示" },
-        {"key": "Shift+Enter","action": "换行","category": "其他" },
-        {"key": "Ctrl+Shift+K","action": "快捷短语","category": "文件" },
-        {"key": "Ctrl+K","action": "搜索","category": "搜索"
-        }
+        {"key": "Ctrl+Alt+I","action": "打开工作台","category": "编辑"},
+        {"key": "Ctrl+/","action": "全局搜索","category": "搜索"},
+        {"key": "Ctrl+Shift+M","action": "发起会议","category": "文件"},
+        {"key": "Enter","action": "发送消息","category": "演示"},
+        {"key": "Shift+Enter","action": "换行","category": "其他"},
+        {"key": "Ctrl+Shift+K","action": "快捷短语","category": "文件"},
+        {"key": "Ctrl+K","action": "搜索","category": "搜索"}
       ]
     }
   },
