@@ -152,21 +152,30 @@ class EdgeDetector {
     const windowHeight = Math.min(600, height);
 
     let targetX;
+    let targetY;
     if (this._hiddenAtPos) {
       targetX = this._hiddenAtPos.x;
+      targetY = this._hiddenAtPos.y;
     } else if (this._lastDraggedPos) {
       targetX = this._lastDraggedPos.x;
-    } else {
-      targetX = display.workArea.x + width - windowWidth;
-    }
-
-    let targetY;
-    if (this._lastDraggedPos && this._lastDraggedPos.y !== null) {
       targetY = this._lastDraggedPos.y;
     } else {
+      targetX = display.workArea.x + width - windowWidth;
       targetY = display.workArea.y;
     }
 
+    /*
+      let targetY;
+      if (this._lastDraggedPos && this._lastDraggedPos.y !== null) {
+        targetY = this._lastDraggedPos.y;
+      } else {
+        targetY = display.workArea.y;
+      }
+    */
+
+    if (this.mainWindow.isMinimized()) {
+      this.mainWindow.restore();
+    }
     if (!this.mainWindow.isVisible()) {
       this.mainWindow.show();
     }
@@ -400,6 +409,15 @@ class EdgeDetector {
 
   setMainWindow(mainWindow) {
     this.mainWindow = mainWindow;
+  }
+
+  /**
+   * 设置隐藏倒计时时间（毫秒）
+   * @param {number} delay
+   */
+  setHideDelay(delay) {
+    this.hideDelay = Math.max(1000, Math.min(30000, delay));
+    console.log(`[EdgeDetector] 隐藏倒计时更新为: ${this.hideDelay / 1000}秒`);
   }
 
   /**

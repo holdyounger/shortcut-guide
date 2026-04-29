@@ -15,6 +15,7 @@ const path = require('path');
 const DataManager = require('./data-manager');
 const WindowDetector = require('./window-detector');
 const EdgeDetector = require('./edge-detector');
+const ConfigStore = require('./config-store');
 
 class KeySenseApp {
   constructor() {
@@ -28,8 +29,12 @@ class KeySenseApp {
     this.edgeDetector = null;
     /** @type {Tray|null} 系统托盘 */
     this.tray = null;
+    /** @type {ConfigStore} 用户配置存储 */
+    this.configStore = new ConfigStore();
     /** @type {number} 窗口透明度 (0.0 ~ 1.0) */
-    this.windowOpacity = 0.9;
+    this.windowOpacity = this.configStore.getOpacity();
+    /** @type {number} 隐藏倒计时时间（毫秒） */
+    this.hideDelay = this.configStore.getHideDelay();
   }
 
   /**
@@ -48,6 +53,7 @@ class KeySenseApp {
       transparent: true, // 透明背景
       alwaysOnTop: true, // 始终置顶
       resizable: false, // 禁止调整大小
+      minimizable: false, // 禁止最小化（防止右键菜单最小化后无法恢复）
       skipTaskbar: true, // 不显示在任务栏
       show: false, // 初始隐藏
       opacity: this.windowOpacity,
@@ -72,6 +78,13 @@ class KeySenseApp {
     // 窗口关闭事件
     this.mainWindow.on('closed', () => {
       this.mainWindow = null;
+    });
+
+    // 安全网：防止通过系统菜单（Alt+Space等）最小化窗口
+    this.mainWindow.on('minimize', (e) => {
+      e.preventDefault();
+      this.mainWindow.restore();
+      console.log('[Main] 阻止窗口最小化，已恢复');
     });
 
     // 防止窗口失去焦点时隐藏（由边缘检测器控制）
@@ -248,6 +261,7 @@ class KeySenseApp {
    * @private
    */
   _buildTrayMenu() {
+    // 透明度选项
     const opacityOptions = [
       { label: '30%', value: 0.3 },
       { label: '50%', value: 0.5 },
@@ -262,7 +276,26 @@ class KeySenseApp {
       checked: Math.abs(this.windowOpacity - opt.value) < 0.01,
       click: () => {
         this.setOpacity(opt.value);
-        this._buildTrayMenu(); // 重建菜单以更新选中状态
+        this._buildTrayMenu();
+      },
+    }));
+
+    // 倒计时选项
+    const hideDelayOptions = [
+      { label: '3 秒', value: 3000 },
+      { label: '5 秒', value: 5000 },
+      { label: '10 秒', value: 10000 },
+      { label: '15 秒', value: 15000 },
+      { label: '30 秒', value: 30000 },
+    ];
+
+    const hideDelaySubmenu = hideDelayOptions.map(opt => ({
+      label: opt.label,
+      type: 'radio',
+      checked: this.hideDelay === opt.value,
+      click: () => {
+        this.setHideDelay(opt.value);
+        this._buildTrayMenu();
       },
     }));
 
@@ -278,6 +311,10 @@ class KeySenseApp {
         label: '透明度',
         submenu: opacitySubmenu,
       },
+      {
+        label: '自动隐藏倒计时',
+        submenu: hideDelaySubmenu,
+      },
       { type: 'separator' },
       {
         label: '退出',
@@ -291,7 +328,7 @@ class KeySenseApp {
   }
 
   /**
-   * 设置窗口透明度
+   * 设置窗口透明度（同时持久化到配置）
    * @param {number} opacity - 透明度值 (0.0 ~ 1.0)
    */
   setOpacity(opacity) {
@@ -299,7 +336,21 @@ class KeySenseApp {
     if (this.mainWindow && !this.mainWindow.isDestroyed()) {
       this.mainWindow.setOpacity(this.windowOpacity);
     }
+    this.configStore.setOpacity(this.windowOpacity);
     console.log(`[Main] 窗口透明度设置为: ${Math.round(this.windowOpacity * 100)}%`);
+  }
+
+  /**
+   * 设置隐藏倒计时时间（同时持久化到配置并更新边缘检测器）
+   * @param {number} delay - 倒计时时间（毫秒）
+   */
+  setHideDelay(delay) {
+    this.hideDelay = Math.max(1000, Math.min(30000, delay));
+    if (this.edgeDetector) {
+      this.edgeDetector.setHideDelay(this.hideDelay);
+    }
+    this.configStore.setHideDelay(this.hideDelay);
+    console.log(`[Main] 隐藏倒计时设置为: ${this.hideDelay / 1000}秒`);
   }
 
   /**
@@ -315,6 +366,9 @@ class KeySenseApp {
     // 初始化检测器
     this.initWindowDetector();
     this.initEdgeDetector();
+
+    // 传递配置给边缘检测器
+    this.edgeDetector.setHideDelay(this.hideDelay);
 
     // 初始化系统托盘
     this.initTray();
