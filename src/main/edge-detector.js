@@ -36,6 +36,10 @@ class EdgeDetector {
     this.isCountingDown = false;
     /** 欢迎页是否已关闭（关闭前不启动隐藏倒计时）*/
     this._welcomeDismissed = false;
+    /** 淡出动画的 interval ID */
+    this._fadeIntervalId = null;
+    /** 是否正在淡出动画中（淡出期间忽略鼠标事件）*/
+    this._isFadingOut = false;
   }
 
   /**
@@ -66,6 +70,7 @@ class EdgeDetector {
 
   onMouseEnter() {
     if (this.isPinned) return;
+    if (this._isFadingOut) return; // 淡出期间忽略鼠标事件
     if (!this.isWindowVisible) {
       try {
         const point = screen.getCursorScreenPoint();
@@ -80,6 +85,7 @@ class EdgeDetector {
 
   onMouseLeave() {
     if (this.isPinned) return;
+    if (this._isFadingOut) return; // 淡出期间忽略鼠标事件
     if (this.isWindowVisible) {
       this._startHideTimer();
     }
@@ -94,6 +100,7 @@ class EdgeDetector {
   }
 
   _checkMousePosition() {
+    if (this._isFadingOut) return; // 淡出期间跳过鼠标检测
     try {
       const point = screen.getCursorScreenPoint();
       const display = screen.getDisplayNearestPoint(point);
@@ -136,6 +143,9 @@ class EdgeDetector {
    */
   _showWindow(display) {
     if (!this.mainWindow || this.mainWindow.isDestroyed()) return;
+
+    // 取消正在进行的淡出动画
+    this._cancelFadeAnimation();
 
     const { width, height } = display.workAreaSize;
     const windowWidth = 300;
@@ -182,7 +192,8 @@ class EdgeDetector {
   }
 
   /**
-   * 隐藏窗口
+   * 隐藏窗口（带淡出 + 滑动动画）
+   * 使用 ease-out cubic 缓动，60fps 流畅动画
    * @private
    */
   _hideWindow() {
@@ -197,17 +208,48 @@ class EdgeDetector {
 
     const targetEdge = this._getNearestEdge();
     const display = screen.getDisplayNearestPoint({ x: currentBounds.x, y: currentBounds.y });
-    const targetX = targetEdge === 'right'
+    const snapX = targetEdge === 'right'
       ? display.workArea.x + display.workAreaSize.width - currentBounds.width
       : display.workArea.x;
 
-    this.mainWindow.setPosition(targetX, currentBounds.y);
-    this.mainWindow.setOpacity(1);
-    this.mainWindow.hide();
-    this.isWindowVisible = false;
-    this._preferredSnapEdge = targetEdge;
-    this._notifyRendererCountdown();
-    console.log(`[EdgeDetector] 隐藏窗口（贴边: ${targetEdge}）`);
+    // 动画参数
+    const duration = 300;           // 动画总时长 300ms
+    const frameInterval = 16;       // ~60fps
+    const startOpacity = this.mainWindow.getOpacity();
+    const startX = currentBounds.x;
+    const deltaX = snapX - startX;  // 滑动距离
+    const startTime = Date.now();
+
+    // 取消之前的动画
+    this._cancelFadeAnimation();
+
+    // 标记正在淡出，忽略鼠标事件
+    this._isFadingOut = true;
+
+    this._fadeIntervalId = setInterval(() => {
+      const elapsed = Date.now() - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+
+      // ease-out cubic: 1 - (1 - t)^3 — 先快后慢，更自然
+      const eased = 1 - Math.pow(1 - progress, 3);
+
+      // 同步更新透明度和位置
+      this.mainWindow.setOpacity(startOpacity * (1 - eased));
+      this.mainWindow.setPosition(Math.round(startX + deltaX * eased), currentBounds.y);
+
+      if (progress >= 1) {
+        clearInterval(this._fadeIntervalId);
+        this._fadeIntervalId = null;
+        this._isFadingOut = false;
+        this.mainWindow.hide();
+        this.isWindowVisible = false;
+        this._preferredSnapEdge = targetEdge;
+        this._notifyRendererCountdown();
+        console.log(`[EdgeDetector] 隐藏窗口（贴边: ${targetEdge}）`);
+      }
+    }, frameInterval);
+
+    console.log(`[EdgeDetector] 启动淡出动画 (时长: ${duration}ms)`);
   }
 
   _startHideTimer() {
@@ -291,6 +333,25 @@ class EdgeDetector {
       this._hideDeadline = null;
       this.isCountingDown = false;
       this._notifyRendererCountdown();
+    }
+    // 同时取消淡出动画
+    this._cancelFadeAnimation();
+  }
+
+  /**
+   * 取消正在进行的淡出动画，恢复窗口透明度
+   * @private
+   */
+  _cancelFadeAnimation() {
+    if (this._fadeIntervalId) {
+      clearInterval(this._fadeIntervalId);
+      this._fadeIntervalId = null;
+      this._isFadingOut = false;
+      // 恢复窗口透明度
+      if (this.mainWindow && !this.mainWindow.isDestroyed() && this.isWindowVisible) {
+        this.mainWindow.setOpacity(1);
+      }
+      console.log('[EdgeDetector] 淡出动画已取消');
     }
   }
 
