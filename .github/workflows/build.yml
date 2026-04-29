@@ -42,7 +42,10 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: windows-build
-          path: build/shortcut-guide-*.exe
+          path: |
+            build/shortcut-guide-*.exe
+            build/*.blockmap
+            build/*.nupkg
           retention-days: 30
 
   # TODO: macOS 构建（待启用）
@@ -126,6 +129,9 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: artifacts
+
+      - name: Show downloaded artifacts
+        run: ls -la artifacts/windows-build/ || echo "No files found"
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
