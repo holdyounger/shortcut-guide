@@ -8,7 +8,7 @@
 
 1. **安装依赖**：确保项目已安装
    ```bash
-   cd /mnt/d/Montarius/source/shortcut-guide
+   cd /mnt/d/Montarius/source/KeySense
    npm install
    ```
 

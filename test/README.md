@@ -47,7 +47,7 @@ test/
 ### 1️⃣ 安装测试依赖
 
 ```bash
-cd /mnt/d/Montarius/source/shortcut-guide
+cd /mnt/d/Montarius/source/KeySense
 npm install
 npm install --save-dev spectron mocha chai
 ```

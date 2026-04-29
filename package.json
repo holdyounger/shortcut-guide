@@ -1,5 +1,5 @@
 {
-  "name": "shortcut-guide",
+  "name": "KeySense",
   "version": "1.1.0",
   "description": "跨平台App快捷键提示器 - 快速唤出快捷键指南，自动隐藏到系统边框",
   "main": "src/main/index.js",
@@ -43,8 +43,8 @@
     "semver": "^7.7.4"
   },
   "build": {
-    "appId": "com.openclaw.shortcut-guide",
-    "productName": "shortcut-guide",
+    "appId": "com.openclaw.KeySense",
+    "productName": "KeySense",
     "directories": {
       "output": "build"
     },

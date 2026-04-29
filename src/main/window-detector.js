@@ -119,13 +119,13 @@ class WindowDetector {
     this._selfProcessNames = [
       'electron',
       'electron.exe',
-      'shortcut-guide',
-      'shortcut-guide.exe',
+      'KeySense',
+      'KeySense.exe',
     ];
     this._selfTitles = [
       '快捷键提示器',
       'KeySense',
-      'shortcut-guide',
+      'KeySense',
     ];
   }
 

@@ -31,7 +31,7 @@
 ### 安装依赖
 
 ```bash
-cd /home/montarius/.openclaw/workspace/projects/shortcut-guide
+cd /home/montarius/.openclaw/workspace/projects/KeySense
 npm install
 ```
 
@@ -92,7 +92,7 @@ const success = globalShortcut.register('Control+Shift+G', () => {
 ## 📂 项目结构
 
 ```
-shortcut-guide/
+KeySense/
 ├── src/
 │   ├── main/
 │   │   └── index.js        # 主进程（Electron主进程）

@@ -90,7 +90,7 @@ npm install --save-dev spectron mocha chai jest
 
 ```bash
 export ELECTRON_DISABLE_SECURITY_WARNINGS=1
-export DEBUG=shortcut-guide:*  # 启用调试日志
+export DEBUG=KeySense:*  # 启用调试日志
 ```
 
 ---

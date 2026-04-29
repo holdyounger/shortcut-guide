@@ -230,7 +230,7 @@ function checkBorderOnAllDisplays(x, y) {
 **诊断**:
 ```bash
 # Linux
-top -p $(pgrep -f "shortcut-guide")
+top -p $(pgrep -f "KeySense")
 
 # Windows
 perfmon /sys /compname:"快捷键提示器"
@@ -335,8 +335,8 @@ app.on('resume', () => {
 
 ```javascript
 // 在 index.js 开头添加
-process.env.DEBUG = 'shortcut-guide:*';
-const debug = require('debug')('shortcut-guide');
+process.env.DEBUG = 'KeySense:*';
+const debug = require('debug')('KeySense');
 
 debug('注册快捷键: %s', accelerator);
 debug('当前窗口状态: %s', mainWindow.isVisible() ? 'visible' : 'hidden');
@@ -373,7 +373,7 @@ log.error('快捷键注册失败:', err);
 3. [ ] 检查是否在系统托盘中（右下角/右上角）
 4. [ ] 尝试点击托盘图标
 5. [ ] 检查应用是否在后台运行（任务管理器）
-6. [ ] 查看 `%APPDATA%/shortcut-guide/logs/` 是否有错误日志
+6. [ ] 查看 `%APPDATA%/KeySense/logs/` 是否有错误日志
 7. [ ] 更新到最新版本
 8. [ ] 在 GitHub Issues 搜索类似问题
 9. [ ] 提交 Issue，附上：操作系统版本、Electron 版本、错误日志、复现步骤
@@ -393,12 +393,12 @@ log.error('快捷键注册失败:', err);
 
 ## 📞 支持渠道
 
-- **GitHub Issues**: https://github.com/openclaw/shortcut-guide/issues
+- **GitHub Issues**: https://github.com/openclaw/KeySense/issues
 - **文档**: `/docs/` 目录
 - **日志路径**: 
-  - Windows: `%APPDATA%/shortcut-guide/logs/`
-  - macOS: `~/Library/Logs/shortcut-guide/`
-  - Linux: `~/.config/shortcut-guide/logs/`
+  - Windows: `%APPDATA%/KeySense/logs/`
+  - macOS: `~/Library/Logs/KeySense/`
+  - Linux: `~/.config/KeySense/logs/`
 
 ---
 

@@ -8,7 +8,7 @@ set -e
 echo "🚀 启动 KeySense 快捷键感知器..."
 
 # 确保在项目根目录
-cd /mnt/d/Montarius/source/shortcut-guide
+cd /mnt/d/Montarius/source/KeySense
 
 # 安装依赖（如果需要）
 echo "📦 安装依赖..."

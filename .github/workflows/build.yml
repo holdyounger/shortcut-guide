@@ -73,7 +73,7 @@ jobs:
   #       uses: actions/upload-artifact@v4
   #       with:
   #         name: macos-build
-  #         path: build/shortcut-guide-*.dmg
+  #         path: build/KeySense-*.dmg
   #         retention-days: 30
 
   # TODO: Linux 构建（待启用）
@@ -108,7 +108,7 @@ jobs:
   #       uses: actions/upload-artifact@v4
   #       with:
   #         name: linux-build
-  #         path: build/shortcut-guide-*.AppImage
+  #         path: build/KeySense-*.AppImage
   #         retention-days: 30
 
   # ========== 发布 Release（仅 tag 触发） ==========
