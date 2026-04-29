@@ -1,15 +1,16 @@
 /**
  * index.js - Electron 主进程入口
- * 
+ *
  * KeySense（快捷键感知器）主进程
- * 
+ *
  * 功能：
  * - 创建无边框、透明、始终置顶的主窗口
  * - 注册全局快捷键 Ctrl+Shift+K 切换显示/隐藏
+ * - 系统托盘：退出、透明度调节
  * - 协调窗口检测、边缘检测和数据管理模块
  */
 
-const { app, BrowserWindow, globalShortcut, ipcMain, screen } = require('electron');
+const { app, BrowserWindow, globalShortcut, ipcMain, screen, Tray, Menu, nativeImage } = require('electron');
 const path = require('path');
 const DataManager = require('./data-manager');
 const WindowDetector = require('./window-detector');
@@ -25,6 +26,10 @@ class KeySenseApp {
     this.windowDetector = null;
     /** @type {EdgeDetector|null} 边缘检测器 */
     this.edgeDetector = null;
+    /** @type {Tray|null} 系统托盘 */
+    this.tray = null;
+    /** @type {number} 窗口透明度 (0.0 ~ 1.0) */
+    this.windowOpacity = 0.9;
   }
 
   /**
@@ -45,7 +50,7 @@ class KeySenseApp {
       resizable: false, // 禁止调整大小
       skipTaskbar: true, // 不显示在任务栏
       show: false, // 初始隐藏
-      opacity: 0.1, // 初始透明度
+      opacity: this.windowOpacity,
       webPreferences: {
         nodeIntegration: false,
         contextIsolation: true,
@@ -208,6 +213,96 @@ class KeySenseApp {
   }
 
   /**
+   * 初始化系统托盘
+   */
+  initTray() {
+    // 托盘图标路径
+    const iconPath = path.join(__dirname, '../renderer/icon.png');
+    let trayIcon;
+    try {
+      trayIcon = nativeImage.createFromPath(iconPath);
+      // Windows 托盘图标推荐 16x16，缩放处理
+      if (process.platform === 'win32') {
+        trayIcon = trayIcon.resize({ width: 16, height: 16 });
+      }
+    } catch (err) {
+      console.error(`[Main] 加载托盘图标失败: ${err.message}`);
+      trayIcon = nativeImage.createEmpty();
+    }
+
+    this.tray = new Tray(trayIcon);
+    this.tray.setToolTip('快捷键提示器 - Ctrl+Shift+K 切换显示');
+
+    this._buildTrayMenu();
+
+    // 点击托盘图标切换窗口显示
+    this.tray.on('click', () => {
+      this.edgeDetector.toggle();
+    });
+
+    console.log('[Main] 系统托盘初始化完成');
+  }
+
+  /**
+   * 构建托盘右键菜单
+   * @private
+   */
+  _buildTrayMenu() {
+    const opacityOptions = [
+      { label: '30%', value: 0.3 },
+      { label: '50%', value: 0.5 },
+      { label: '70%', value: 0.7 },
+      { label: '90%', value: 0.9 },
+      { label: '100%（不透明）', value: 1.0 },
+    ];
+
+    const opacitySubmenu = opacityOptions.map(opt => ({
+      label: opt.label,
+      type: 'radio',
+      checked: Math.abs(this.windowOpacity - opt.value) < 0.01,
+      click: () => {
+        this.setOpacity(opt.value);
+        this._buildTrayMenu(); // 重建菜单以更新选中状态
+      },
+    }));
+
+    const contextMenu = Menu.buildFromTemplate([
+      {
+        label: '显示/隐藏',
+        click: () => {
+          this.edgeDetector.toggle();
+        },
+      },
+      { type: 'separator' },
+      {
+        label: '透明度',
+        submenu: opacitySubmenu,
+      },
+      { type: 'separator' },
+      {
+        label: '退出',
+        click: () => {
+          app.quit();
+        },
+      },
+    ]);
+
+    this.tray.setContextMenu(contextMenu);
+  }
+
+  /**
+   * 设置窗口透明度
+   * @param {number} opacity - 透明度值 (0.0 ~ 1.0)
+   */
+  setOpacity(opacity) {
+    this.windowOpacity = Math.max(0.1, Math.min(1.0, opacity));
+    if (this.mainWindow && !this.mainWindow.isDestroyed()) {
+      this.mainWindow.setOpacity(this.windowOpacity);
+    }
+    console.log(`[Main] 窗口透明度设置为: ${Math.round(this.windowOpacity * 100)}%`);
+  }
+
+  /**
    * 应用初始化
    */
   async init() {
@@ -220,6 +315,9 @@ class KeySenseApp {
     // 初始化检测器
     this.initWindowDetector();
     this.initEdgeDetector();
+
+    // 初始化系统托盘
+    this.initTray();
 
     // 注册全局快捷键
     this.registerGlobalShortcut();
@@ -245,6 +343,12 @@ class KeySenseApp {
       this.edgeDetector.stop();
     }
 
+    // 销毁托盘
+    if (this.tray) {
+      this.tray.destroy();
+      this.tray = null;
+    }
+
     // 关闭窗口
     if (this.mainWindow && !this.mainWindow.isDestroyed()) {
       this.mainWindow.close();
@@ -262,11 +366,9 @@ app.whenReady().then(async () => {
   await keySenseApp.init();
 });
 
-// 所有窗口关闭时退出（macOS 除外）
+// 所有窗口关闭时不退出（保持托盘运行）
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
+  // 有托盘时不退出，用户通过托盘菜单退出
 });
 
 // macOS 激活应用时重新创建窗口
