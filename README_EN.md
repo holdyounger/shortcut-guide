@@ -23,17 +23,16 @@
 
 ## 🎬 Screenshots
 
-### First Launch · Welcome Overlay
-
-![Welcome](README/image-20260429091437506.png)
-
-### Visual Studio Code
-
-![VS Code](README/image-20260429091029515.png)
-
-### Windows Explorer
-
-![Explorer](README/image-20260429091106001.png)
+<details>
+  <summary>📸 Screenshots（Click to Expand）</summary>
+  <blockquote>✨ Overview of the three core interfaces of the system</blockquote>
+  <p><strong>1️⃣ First Launch · Welcome Overlay</strong></p>
+  <img src="README/image-20260429091437506.png" alt="首次启动欢迎页" />
+  <p><strong>2️⃣ Visual Studio Code</strong></p>
+  <img src="README/image-20260429091029515.png" alt="VS Code"/>
+  <p><strong>3️⃣ Windows Explorer</strong></p>
+  <img src="README/image-20260429091106001.png" alt="资源管理器" />
+</details>
 
 ---
 

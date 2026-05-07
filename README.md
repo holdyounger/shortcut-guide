@@ -23,17 +23,17 @@
 
 ## 🎬 运行效果
 
-### 首次启动 · 欢迎页
+<details>
+  <summary>📸 运行截图（点击展开）</summary>
+  <blockquote>✨ 系统三大核心界面一览</blockquote>
+  <p><strong>1️⃣ 首次启动 · 欢迎页</strong></p>
+  <img src="README/image-20260429091437506.png" alt="首次启动欢迎页" />
+  <p><strong>2️⃣ Visual Studio Code</strong></p>
+  <img src="README/image-20260429091029515.png" alt="VS Code" />
+  <p><strong>3️⃣ Windows 资源管理器</strong></p>
+  <img src="README/image-20260429091106001.png" alt="资源管理器" />
+</details>
 
-![首次启动欢迎页](README/image-20260429091437506.png)
-
-### Visual Studio Code
-
-![VS Code](README/image-20260429091029515.png)
-
-### Windows 资源管理器
-
-![资源管理器](README/image-20260429091106001.png)
 
 ---
 
