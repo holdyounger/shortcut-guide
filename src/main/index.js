@@ -264,7 +264,7 @@ class KeySenseApp {
     }
 
     this.tray = new Tray(trayIcon);
-    this.tray.setToolTip('快捷键提示器 - Ctrl+Shift+K 切换显示');
+    this.tray.setToolTip('KeySense - Ctrl+Shift+K 切换显示');
 
     this._buildTrayMenu();
 
