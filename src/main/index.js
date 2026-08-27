@@ -53,8 +53,8 @@ class KeySenseApp {
     this.mainWindow = new BrowserWindow({
       width: windowWidth,
       height: 400, // 初始高度，后续自适应
-      x: width - windowWidth, // 定位到屏幕右边缘
-      y: 0,
+      // x: width - windowWidth, // 定位到屏幕右边缘
+      // y: 0,
       frame: false, // 无边框
       transparent: true, // 透明背景
       alwaysOnTop: true, // 始终置顶
